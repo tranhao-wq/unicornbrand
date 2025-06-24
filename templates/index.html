@@ -63,27 +63,31 @@
             <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; color: #1f2937;">Shop by Category</h2>
             <p style="font-size: 1.125rem; color: #6b7280;">Find the perfect shoes for every occasion</p>
         </div>
-        
-        <div class="grid grid-cols-4">
-            {% set categories = [
-                ('sneakers', 'Sneakers', 'fas fa-running', 'Perfect for casual wear and sports'),
-                ('boots', 'Boots', 'fas fa-hiking', 'Durable and stylish for all weather'),
-                ('formal', 'Formal Shoes', 'fas fa-user-tie', 'Professional and elegant footwear'),
-                ('sports', 'Sports Shoes', 'fas fa-dumbbell', 'Performance footwear for athletes')
-            ] %}
-            
-            {% for category, name, icon, description in categories %}
-                <div class="card" style="text-align: center; padding: 2rem;">
-                    <div style="font-size: 3rem; color: #667eea; margin-bottom: 1rem;">
-                        <i class="{{ icon }}"></i>
-                    </div>
-                    <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; color: #1f2937;">{{ name }}</h3>
-                    <p style="color: #6b7280; margin-bottom: 1.5rem;">{{ description }}</p>
-                    <a href="{{ url_for('main.products', category=category) }}" class="btn-outline">
-                        Shop {{ name }}
-                    </a>
-                </div>
-            {% endfor %}
+        <div class="category-grid">
+            <div class="category-card">
+                <div class="category-icon"><i class="fas fa-running"></i></div>
+                <div class="category-title">Sneakers</div>
+                <div class="category-desc">Perfect for casual wear and sports</div>
+                <a href="{{ url_for('main.products', category='sneakers') }}" class="btn-outline category-btn">Shop Sneakers</a>
+            </div>
+            <div class="category-card">
+                <div class="category-icon"><i class="fas fa-hiking"></i></div>
+                <div class="category-title">Boots</div>
+                <div class="category-desc">Durable and stylish for all weather</div>
+                <a href="{{ url_for('main.products', category='boots') }}" class="btn-outline category-btn">Shop Boots</a>
+            </div>
+            <div class="category-card">
+                <div class="category-icon"><i class="fas fa-user-tie"></i></div>
+                <div class="category-title">Formal Shoes</div>
+                <div class="category-desc">Professional and elegant footwear</div>
+                <a href="{{ url_for('main.products', category='formal') }}" class="btn-outline category-btn">Shop Formal Shoes</a>
+            </div>
+            <div class="category-card">
+                <div class="category-icon"><i class="fas fa-dumbbell"></i></div>
+                <div class="category-title">Sports Shoes</div>
+                <div class="category-desc">Performance footwear for athletes</div>
+                <a href="{{ url_for('main.products', category='sports') }}" class="btn-outline category-btn">Shop Sports Shoes</a>
+            </div>
         </div>
     </div>
 </section>
