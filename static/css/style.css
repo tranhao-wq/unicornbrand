@@ -1164,3 +1164,29 @@ body > *:not(.garniture-bg) {
   position: relative;
   z-index: 1;
 }
+
+/* --- Marquee Banner in Hero Section --- */
+.marquee-banner {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.marquee-banner::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 200%; height: 100%;
+  background: url('/static/assets/images/garniture2.jpg') repeat-x center center/auto 100%;
+  animation: marqueeScroll 18s linear infinite;
+  opacity: 0.45;
+  filter: blur(1.5px) brightness(1.08) saturate(1.1);
+}
+@keyframes marqueeScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.hero .container.hero-flex {
+  position: relative;
+  z-index: 2;
+}
