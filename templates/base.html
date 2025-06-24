@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}UNICORN BRAND - Premium Footwear{% endblock %}</title>
+    
+    <!-- CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/images/unicorn.png') }}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0;">
+                <a href="{{ url_for('main.index') }}" class="navbar-brand" style="display: flex; align-items: center; gap: 0.75rem;">
+                    <img src="{{ url_for('static', filename='assets/images/unicorn.png') }}" alt="Unicorn Brand Logo" style="height: 48px; width: 48px; border-radius: 50%; background: white; object-fit: cover;">
+                    <span style="font-weight: bold; font-size: 1.5rem; color: #1f2937;">UNICORN BRAND</span>
+                </a>
+                
+                <div style="display: flex; align-items: center; gap: 2rem;">
+                    <a href="{{ url_for('main.index') }}" class="nav-link">Home</a>
+                    <a href="{{ url_for('main.products') }}" class="nav-link">Products</a>
+                    <a href="{{ url_for('main.about') }}" class="nav-link">About</a>
+                    <a href="{{ url_for('main.contact') }}" class="nav-link">Contact</a>
+                    
+                    {% if current_user.is_authenticated %}
+                        <div style="position: relative;">
+                            <a href="{{ url_for('cart.view_cart') }}" class="nav-link">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span id="cart-count" class="badge" style="position: absolute; top: -8px; right: -8px; background: #ef4444; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 0.75rem; display: flex; align-items: center; justify-content: center;">
+                                    {{ session.get('cart', [])|length }}
+                                </span>
+                            </a>
+                        </div>
+                        
+                        <div style="position: relative; display: inline-block;">
+                            <button onclick="toggleDropdown()" class="nav-link" style="background: none; border: none; cursor: pointer;">
+                                <i class="fas fa-user"></i> {{ current_user.get_full_name() }}
+                                <i class="fas fa-chevron-down" style="font-size: 0.8rem; margin-left: 0.5rem;"></i>
+                            </button>
+                            <div id="user-dropdown" class="dropdown-menu" style="display: none; position: absolute; top: 100%; right: 0; background: white; border-radius: 0.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.1); min-width: 200px; z-index: 1000;">
+                                <a href="{{ url_for('auth.profile') }}" class="dropdown-item">
+                                    <i class="fas fa-user"></i> Profile
+                                </a>
+                                <a href="{{ url_for('auth.orders') }}" class="dropdown-item">
+                                    <i class="fas fa-box"></i> My Orders
+                                </a>
+                                {% if current_user.is_admin %}
+                                    <hr style="margin: 0.5rem 0; border: none; border-top: 1px solid #e5e7eb;">
+                                    <a href="{{ url_for('admin.dashboard') }}" class="dropdown-item">
+                                        <i class="fas fa-tachometer-alt"></i> Admin Dashboard
+                                    </a>
+                                {% endif %}
+                                <hr style="margin: 0.5rem 0; border: none; border-top: 1px solid #e5e7eb;">
+                                <a href="{{ url_for('auth.logout') }}" class="dropdown-item">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <a href="{{ url_for('auth.login') }}" class="nav-link">Login</a>
+                        <a href="{{ url_for('auth.register') }}" class="btn-primary" style="text-decoration: none;">Sign Up</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container" style="margin-top: 1rem;">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'error' if category == 'error' else category }}">
+                        {{ message }}
+                        <button class="alert-close" style="float: right; background: none; border: none; font-size: 1.2rem; cursor: pointer;">&times;</button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="grid grid-cols-4" style="margin-bottom: 2rem;">
+                <div>
+                    <h5 style="display: flex; align-items: center; gap: 0.5rem;"><img src="{{ url_for('static', filename='assets/images/unicorn.png') }}" alt="Unicorn Brand Logo" style="height: 32px; width: 32px; border-radius: 50%; background: white; object-fit: cover;"> UNICORN BRAND</h5>
+                    <p style="color: #d1d5db; margin-bottom: 1rem;">Premium footwear for every occasion. Step into excellence with our curated collection of shoes.</p>
+                    <div style="display: flex; gap: 1rem;">
+                        <a href="https://www.facebook.com/brand.unicorn/" style="font-size: 1.5rem;" target="_blank" rel="noopener"><i class="fab fa-facebook"></i></a>
+                        <a href="https://twitter.com/unicornbrandvn" style="font-size: 1.5rem;" target="_blank" rel="noopener"><i class="fab fa-twitter"></i></a>
+                        <a href="https://instagram.com/unicornbrand.vn" style="font-size: 1.5rem;" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.threads.net/@unicornbrand.vn" style="font-size: 1.5rem;" target="_blank" rel="noopener"><i class="fab fa-threads"></i></a>
+                        <a href="https://www.youtube.com/@unicornbrandvn" style="font-size: 1.5rem;" target="_blank" rel="noopener"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.tiktok.com/@unicornbrandvn" style="font-size: 1.5rem;" target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h5>Quick Links</h5>
+                    <ul style="list-style: none;">
+                        <li style="margin-bottom: 0.5rem;"><a href="{{ url_for('main.products') }}">All Products</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="{{ url_for('main.products', category='sneakers') }}">Sneakers</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="{{ url_for('main.products', category='boots') }}">Boots</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="{{ url_for('main.products', category='formal') }}">Formal Shoes</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h5>Customer Service</h5>
+                    <ul style="list-style: none;">
+                        <li style="margin-bottom: 0.5rem;"><a href="{{ url_for('main.contact') }}">Contact Us</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#">Shipping Info</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#">Returns</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#">Size Guide</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h5>Contact Info</h5>
+                    <div style="color: #d1d5db;">
+                        <p style="margin-bottom: 0.5rem;"><i class="fas fa-map-marker-alt"></i> 123 Fashion Street, Style City, SC 12345</p>
+                        <p style="margin-bottom: 0.5rem;"><i class="fas fa-phone"></i> (555) 123-4567</p>
+                        <p style="margin-bottom: 0.5rem;"><i class="fas fa-envelope"></i> info@unicornbrand.com</p>
+                    </div>
+                </div>
+            </div>
+            
+            <hr style="border-color: #374151; margin: 2rem 0 1rem;">
+            <div style="text-align: center; color: #9ca3af;">
+                <p>&copy; 2024 UNICORN BRAND.</p>
+                <p><strong>All rights reserved.</strong></p>
+                <p>Privacy Policy | Terms of Service</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    
+    <script>
+        // Dropdown functionality
+        function toggleDropdown() {
+            const dropdown = document.getElementById('user-dropdown');
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('user-dropdown');
+            const button = event.target.closest('button');
+            
+            if (dropdown && !button) {
+                dropdown.style.display = 'none';
+            }
+        });
+        
+        // Dropdown item styles
+        const style = document.createElement('style');
+        style.textContent = `
+            .dropdown-item {
+                display: block;
+                padding: 0.75rem 1rem;
+                color: #374151;
+                text-decoration: none;
+                transition: background-color 0.2s ease;
+            }
+            .dropdown-item:hover {
+                background-color: #f3f4f6;
+                color: #667eea;
+            }
+            .dropdown-item i {
+                width: 20px;
+                margin-right: 0.5rem;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

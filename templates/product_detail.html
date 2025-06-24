@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} - UNICORN BRAND{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 2rem 0;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-bottom: 3rem;">
+        <!-- Product Images -->
+        <div>
+            <img id="main-product-image" src="{{ product.image_url or '/static/images/placeholder-shoe.jpg' }}" alt="{{ product.name }}" style="width: 100%; border-radius: 1rem; margin-bottom: 1rem;">
+        </div>
+        
+        <!-- Product Info -->
+        <div>
+            <span class="product-category">{{ product.category.title() }}</span>
+            <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; color: #1f2937;">{{ product.name }}</h1>
+            <p class="product-price" style="font-size: 2rem; margin-bottom: 1rem;">{{ product.formatted_price() }}</p>
+            
+            <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 2rem;">
+                {% if product.is_in_stock() %}
+                    <span class="badge badge-green">In Stock ({{ product.stock_quantity }} available)</span>
+                {% else %}
+                    <span class="badge badge-red">Out of Stock</span>
+                {% endif %}
+                <span style="color: #6b7280;">Brand: {{ product.brand }}</span>
+            </div>
+            
+            <div style="margin-bottom: 2rem;">
+                <h3 style="font-weight: 600; margin-bottom: 0.5rem;">Description</h3>
+                <p style="color: #6b7280; line-height: 1.6;">{{ product.description or 'No description available.' }}</p>
+            </div>
+            
+            {% if current_user.is_authenticated and product.is_in_stock() %}
+                <form method="POST" action="{{ url_for('cart.add_to_cart') }}">
+                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                        {% if product.get_sizes_list() %}
+                            <div class="form-group">
+                                <label class="form-label">Size</label>
+                                <select name="size" class="form-control form-select" required>
+                                    <option value="">Select Size</option>
+                                    {% for size in product.get_sizes_list() %}
+                                        <option value="{{ size.strip() }}">{{ size.strip() }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        {% endif %}
+                        
+                        {% if product.get_colors_list() %}
+                            <div class="form-group">
+                                <label class="form-label">Color</label>
+                                <select name="color" class="form-control form-select" required>
+                                    <option value="">Select Color</option>
+                                    {% for color in product.get_colors_list() %}
+                                        <option value="{{ color.strip() }}">{{ color.strip() }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Quantity</label>
+                        <div class="quantity-control" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem;">
+                            <button type="button" class="quantity-minus" style="background: #f3f4f6; border: 1px solid #d1d5db; width: 40px; height: 40px; border-radius: 0.375rem; cursor: pointer;">-</button>
+                            <input type="number" name="quantity" value="1" min="1" max="{{ product.stock_quantity }}" class="quantity-input form-control" style="width: 80px; text-align: center;">
+                            <button type="button" class="quantity-plus" style="background: #f3f4f6; border: 1px solid #d1d5db; width: 40px; height: 40px; border-radius: 0.375rem; cursor: pointer;">+</button>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary add-to-cart-btn" style="width: 100%; padding: 1rem; font-size: 1.125rem;">
+                        <i class="fas fa-shopping-cart"></i> Add to Cart
+                    </button>
+                </form>
+            {% elif not current_user.is_authenticated %}
+                <div class="text-center" style="padding: 2rem; background: #f9fafb; border-radius: 0.5rem;">
+                    <p style="margin-bottom: 1rem; color: #6b7280;">Please log in to purchase this product</p>
+                    <a href="{{ url_for('auth.login') }}" class="btn-primary">Login to Buy</a>
+                </div>
+            {% else %}
+                <div class="text-center" style="padding: 2rem; background: #fee2e2; border-radius: 0.5rem;">
+                    <p style="color: #991b1b; font-weight: 600;">This product is currently out of stock</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Related Products -->
+    {% if related_products %}
+        <section>
+            <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 2rem; color: #1f2937;">Related Products</h2>
+            <div class="grid grid-cols-4">
+                {% for product in related_products %}
+                    <div class="card product-card">
+                        <img src="{{ product.image_url or '/static/images/placeholder-shoe.jpg' }}" alt="{{ product.name }}">
+                        <div class="product-info">
+                            <span class="product-category">{{ product.category.title() }}</span>
+                            <h3 class="product-title">{{ product.name }}</h3>
+                            <p class="product-price">{{ product.formatted_price() }}</p>
+                            <a href="{{ url_for('main.product_detail', id=product.id) }}" class="btn-outline" style="width: 100%; text-align: center; text-decoration: none;">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
+</div>
+{% endblock %}

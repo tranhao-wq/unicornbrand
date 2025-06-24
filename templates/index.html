@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container" style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; justify-content: center;">
+        <div style="flex: 0 0 auto; text-align: left;">
+            <iframe 
+                class="fb-video-animate-bounce"
+                src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Fbrand.unicorn%2Fvideos%2F645892074791757%2F&show_text=true&width=267&t=0" 
+                width="267" 
+                height="591" 
+                style="border:none;overflow:hidden" 
+                scrolling="no" 
+                frameborder="0" 
+                allowfullscreen="true" 
+                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" 
+                allowFullScreen="true">
+            </iframe>
+        </div>
+        <div style="flex: 1 1 350px; min-width: 300px; text-align: center;">
+            <h1>Step Into Excellence</h1>
+            <p class="mb-4">Discover premium footwear that combines style, comfort, and quality</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="{{ url_for('main.products') }}" class="btn-primary">Shop Now</a>
+                <a href="{{ url_for('main.about') }}" class="btn-outline">Learn More</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Products -->
+<section style="padding: 4rem 0;">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; color: #1f2937;">Featured Products</h2>
+            <p style="font-size: 1.125rem; color: #6b7280; max-width: 600px; margin: 0 auto;">Handpicked selection of our most popular and trending footwear</p>
+        </div>
+        
+        {% if featured_products %}
+            <div class="grid grid-cols-4" style="margin-bottom: 3rem;">
+                {% for product in featured_products %}
+                    <div class="card product-card">
+                        <img src="{{ product.image_url or '/static/images/placeholder-shoe.jpg' }}" alt="{{ product.name }}" loading="lazy">
+                        <div class="product-info">
+                            <span class="product-category">{{ product.category.title() }}</span>
+                            <h3 class="product-title">{{ product.name }}</h3>
+                            <p class="product-price">{{ product.formatted_price() }}</p>
+                            <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 1rem;">
+                                {% if product.is_in_stock() %}
+                                    <span class="badge badge-green">In Stock</span>
+                                {% else %}
+                                    <span class="badge badge-red">Out of Stock</span>
+                                {% endif %}
+                                <span style="color: #6b7280; font-size: 0.875rem;">{{ product.get_sizes_list()|length }} sizes</span>
+                            </div>
+                            <a href="{{ url_for('main.product_detail', id=product.id) }}" class="btn-primary" style="width: 100%; text-align: center; text-decoration: none;">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <div class="text-center">
+            <a href="{{ url_for('main.products') }}" class="btn-outline">View All Products</a>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Section -->
+<section style="background: white; padding: 4rem 0;">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; color: #1f2937;">Shop by Category</h2>
+            <p style="font-size: 1.125rem; color: #6b7280;">Find the perfect shoes for every occasion</p>
+        </div>
+        
+        <div class="grid grid-cols-4">
+            {% set categories = [
+                ('sneakers', 'Sneakers', 'fas fa-running', 'Perfect for casual wear and sports'),
+                ('boots', 'Boots', 'fas fa-hiking', 'Durable and stylish for all weather'),
+                ('formal', 'Formal Shoes', 'fas fa-user-tie', 'Professional and elegant footwear'),
+                ('sports', 'Sports Shoes', 'fas fa-dumbbell', 'Performance footwear for athletes')
+            ] %}
+            
+            {% for category, name, icon, description in categories %}
+                <div class="card" style="text-align: center; padding: 2rem;">
+                    <div style="font-size: 3rem; color: #667eea; margin-bottom: 1rem;">
+                        <i class="{{ icon }}"></i>
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; color: #1f2937;">{{ name }}</h3>
+                    <p style="color: #6b7280; margin-bottom: 1.5rem;">{{ description }}</p>
+                    <a href="{{ url_for('main.products', category=category) }}" class="btn-outline">
+                        Shop {{ name }}
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4rem 0;">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;">Why Choose UNICORN BRAND?</h2>
+            <p style="font-size: 1.125rem; opacity: 0.9;">Experience the difference with our premium footwear</p>
+        </div>
+        
+        <div class="grid grid-cols-3">
+            <div style="text-align: center;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">
+                    <i class="fas fa-award"></i>
+                </div>
+                <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem;">Premium Quality</h3>
+                <p style="opacity: 0.9;">Crafted with the finest materials and attention to detail</p>
+            </div>
+            
+            <div style="text-align: center;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">
+                    <i class="fas fa-shipping-fast"></i>
+                </div>
+                <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem;">Fast Shipping</h3>
+                <p style="opacity: 0.9;">Free shipping on orders over $100 with quick delivery</p>
+            </div>
+            
+            <div style="text-align: center;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">
+                    <i class="fas fa-undo"></i>
+                </div>
+                <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem;">Easy Returns</h3>
+                <p style="opacity: 0.9;">30-day return policy with hassle-free exchanges</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter Section -->
+<section style="background: #f9fafb; padding: 4rem 0;">
+    <div class="container">
+        <div class="text-center">
+            <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 1rem; color: #1f2937;">Stay Updated</h2>
+            <p style="color: #6b7280; margin-bottom: 2rem;">Subscribe to our newsletter for exclusive offers and new arrivals</p>
+            
+            <form style="max-width: 500px; margin: 0 auto; display: flex; gap: 1rem;">
+                <input type="email" placeholder="Enter your email address" class="form-control" style="flex: 1;" required>
+                <button type="submit" class="btn-primary">Subscribe</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

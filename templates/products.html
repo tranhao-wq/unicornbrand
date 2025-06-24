@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Products - UNICORN BRAND{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 2rem 0;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1 style="font-size: 2.5rem; font-weight: 700; color: #1f2937;">Our Products</h1>
+        <p style="color: #6b7280;">{{ products.total }} products found</p>
+    </div>
+    
+    <!-- Filters -->
+    <div class="card" style="margin-bottom: 2rem; padding: 1.5rem;">
+        <form method="GET" id="filter-form">
+            <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 1rem; align-items: end;">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">Search</label>
+                    <input type="text" name="query" value="{{ search_query }}" placeholder="Search products..." class="form-control">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">Category</label>
+                    <select name="category" class="form-control form-select">
+                        <option value="">All Categories</option>
+                        <option value="sneakers" {{ 'selected' if category == 'sneakers' }}>Sneakers</option>
+                        <option value="boots" {{ 'selected' if category == 'boots' }}>Boots</option>
+                        <option value="sandals" {{ 'selected' if category == 'sandals' }}>Sandals</option>
+                        <option value="formal" {{ 'selected' if category == 'formal' }}>Formal</option>
+                        <option value="sports" {{ 'selected' if category == 'sports' }}>Sports</option>
+                        <option value="casual" {{ 'selected' if category == 'casual' }}>Casual</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">Min Price</label>
+                    <input type="number" name="min_price" value="{{ request.args.get('min_price', '') }}" placeholder="$0" class="form-control">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">Max Price</label>
+                    <input type="number" name="max_price" value="{{ request.args.get('max_price', '') }}" placeholder="$999" class="form-control">
+                </div>
+                <button type="submit" class="btn-primary">Filter</button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Products Grid -->
+    {% if products.items %}
+        <div class="grid grid-cols-3" style="margin-bottom: 3rem;">
+            {% for product in products.items %}
+                <div class="card product-card">
+                    <img src="{{ product.image_url or '/static/images/placeholder-shoe.jpg' }}" alt="{{ product.name }}">
+                    <div class="product-info">
+                        <span class="product-category">{{ product.category.title() }}</span>
+                        <h3 class="product-title">{{ product.name }}</h3>
+                        <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 1rem;">{{ product.description[:100] }}...</p>
+                        <p class="product-price">{{ product.formatted_price() }}</p>
+                        <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 1rem;">
+                            {% if product.is_in_stock() %}
+                                <span class="badge badge-green">In Stock ({{ product.stock_quantity }})</span>
+                            {% else %}
+                                <span class="badge badge-red">Out of Stock</span>
+                            {% endif %}
+                        </div>
+                        <a href="{{ url_for('main.product_detail', id=product.id) }}" class="btn-primary" style="width: 100%; text-align: center; text-decoration: none;">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Pagination -->
+        {% if products.pages > 1 %}
+            <div class="pagination">
+                {% if products.has_prev %}
+                    <a href="{{ url_for('main.products', page=products.prev_num, **request.args) }}">&laquo; Previous</a>
+                {% endif %}
+                
+                {% for page_num in products.iter_pages() %}
+                    {% if page_num %}
+                        {% if page_num != products.page %}
+                            <a href="{{ url_for('main.products', page=page_num, **request.args) }}">{{ page_num }}</a>
+                        {% else %}
+                            <span class="current">{{ page_num }}</span>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                
+                {% if products.has_next %}
+                    <a href="{{ url_for('main.products', page=products.next_num, **request.args) }}">Next &raquo;</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="text-center" style="padding: 4rem 0;">
+            <i class="fas fa-search" style="font-size: 4rem; color: #d1d5db; margin-bottom: 1rem;"></i>
+            <h3 style="color: #6b7280; margin-bottom: 1rem;">No products found</h3>
+            <p style="color: #9ca3af;">Try adjusting your search criteria</p>
+            <a href="{{ url_for('main.products') }}" class="btn-outline">Clear Filters</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
