@@ -11,12 +11,22 @@ body {
     line-height: 1.6;
     color: #333;
     background-color: #f8fafc;
+    padding-top: 84px;
 }
 
 /* Header Styles */
 .navbar {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0; left: 0; width: 100vw;
+    z-index: 100;
+    background: linear-gradient(90deg, #667eea 0%, #42e695 40%, #3bb2b8 70%, #764ba2 100%);
+    box-shadow: 0 6px 24px 0 rgba(102,126,234,0.10), 0 1.5px 6px 0 rgba(118,75,162,0.08);
+    transition: background 0.4s cubic-bezier(0.4,1.6,0.4,1), box-shadow 0.3s;
+    animation: navbarGradientMove 12s ease-in-out infinite alternate;
+}
+@keyframes navbarGradientMove {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
 }
 
 .navbar-brand {
@@ -29,11 +39,13 @@ body {
 .nav-link {
     color: rgba(255, 255, 255, 0.9) !important;
     font-weight: 500;
-    transition: color 0.3s ease;
+    transition: color 0.2s, background 0.2s, box-shadow 0.25s, transform 0.18s cubic-bezier(0.4,1.6,0.4,1);
 }
 
-.nav-link:hover {
-    color: white !important;
+.nav-link:hover, .nav-link:focus {
+    color: #fff !important;
+    text-shadow: 0 2px 8px #764ba2cc, 0 1px 2px #42e695cc;
+    transform: translateY(-2px) scale(1.08) skewX(-4deg);
 }
 
 /* Hero Section */
@@ -93,16 +105,19 @@ body {
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
     font-weight: 600;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: color 0.2s, background 0.2s, box-shadow 0.25s, transform 0.18s cubic-bezier(0.4,1.6,0.4,1);
     width: 100%;
     max-width: 200px;
     margin: 0 auto 1rem auto;
     display: block;
+    box-shadow: 0 2px 8px rgba(102,126,234,0.13);
 }
 
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+.btn-primary:hover, .btn-primary:focus {
+    background: linear-gradient(90deg, #42e695 0%, #3bb2b8 100%);
+    color: #fff;
+    box-shadow: 0 8px 32px 0 rgba(66,230,149,0.18), 0 2px 8px 0 rgba(59,178,184,0.18);
+    transform: translateY(-2px) scale(1.07) rotate(-2deg);
 }
 
 .btn-outline {
@@ -112,17 +127,20 @@ body {
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
     font-weight: 600;
-    transition: all 0.3s ease;
+    transition: color 0.2s, background 0.2s, box-shadow 0.25s, transform 0.18s cubic-bezier(0.4,1.6,0.4,1);
     text-decoration: none !important;
     display: block;
     width: 100%;
     max-width: 200px;
     margin: 0 auto 1rem auto;
+    box-shadow: 0 2px 8px rgba(102,126,234,0.08);
 }
 
-.btn-outline:hover {
-    background: #667eea;
-    color: white;
+.btn-outline:hover, .btn-outline:focus {
+    background: linear-gradient(90deg, #764ba2 0%, #667eea 100%);
+    color: #fff;
+    box-shadow: 0 8px 32px 0 rgba(118,75,162,0.18), 0 2px 8px 0 rgba(102,126,234,0.18);
+    transform: translateY(-2px) scale(1.07) rotate(2deg);
 }
 
 .btn-white-outline {
@@ -1123,4 +1141,26 @@ html, body {
   box-shadow: 0 8px 32px 0 rgba(102,126,234,0.25), 0 2px 8px 0 rgba(118,75,162,0.18);
   filter: brightness(1.08) drop-shadow(0 0 8px #764ba2cc);
   z-index: 2;
+}
+
+/* --- Garniture Background Image & Animation --- */
+.garniture-bg {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  z-index: 0;
+  background: url('/static/assets/images/garniture.jpg') center center/cover no-repeat;
+  opacity: 0.18;
+  filter: blur(2.5px) brightness(1.08) saturate(1.1);
+  transform: scale(1.08);
+  pointer-events: none;
+  animation: garnitureParallax 18s ease-in-out infinite alternate;
+}
+@keyframes garnitureParallax {
+  0% { transform: scale(1.08) translateY(0); filter: blur(2.5px) brightness(1.08) saturate(1.1); }
+  50% { transform: scale(1.12) translateY(-18px); filter: blur(3.5px) brightness(1.13) saturate(1.18); }
+  100% { transform: scale(1.08) translateY(0); filter: blur(2.5px) brightness(1.08) saturate(1.1); }
+}
+body > *:not(.garniture-bg) {
+  position: relative;
+  z-index: 1;
 }
