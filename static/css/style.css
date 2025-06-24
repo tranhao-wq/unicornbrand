@@ -471,3 +471,109 @@ body {
 .fb-video-animate-3d {
     animation: fb-pop-3d 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
+
+/* --- Responsive Design Improvements --- */
+
+/* Ensure images, videos, iframes are always responsive */
+img, video, iframe {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Navbar responsive styles */
+@media (max-width: 992px) {
+  .navbar {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    padding: 0.5rem 1rem !important;
+  }
+  .navbar .nav-links {
+    flex-direction: column !important;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  .navbar .nav-links a {
+    width: 100%;
+    text-align: left;
+    padding: 12px 0;
+    margin: 0;
+  }
+  .navbar .signup-btn {
+    width: 100%;
+    margin-top: 8px;
+    margin-left: 0 !important;
+    text-align: center;
+  }
+}
+
+/* Hero section responsive */
+@media (max-width: 992px) {
+  .hero .container {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 1rem !important;
+    width: 100% !important;
+    padding: 0 8px !important;
+  }
+  .hero .container > div {
+    width: 100% !important;
+    text-align: center !important;
+  }
+  .btn-outline {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+}
+
+/* General mobile improvements */
+@media (max-width: 600px) {
+  body {
+    font-size: 1rem;
+    padding: 0;
+  }
+  h1, h2, h3 {
+    font-size: 1.5rem !important;
+  }
+  .footer, .navbar {
+    font-size: 1rem;
+  }
+  .container, .hero .container {
+    padding: 0 4px !important;
+  }
+}
+
+/* Hide horizontal scroll on mobile */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Hero section responsive fix */
+.hero-flex {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  justify-content: center;
+}
+
+@media (max-width: 992px) {
+  .hero-flex {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 1rem !important;
+    width: 100% !important;
+    padding: 0 8px !important;
+  }
+  .hero-flex > div {
+    width: 100% !important;
+    text-align: center !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    max-width: 100% !important;
+    padding: 0 4px !important;
+  }
+}
