@@ -3,59 +3,217 @@
 {% block title %}About Us - UNICORN BRAND{% endblock %}
 
 {% block content %}
-<div class="container" style="padding: 2rem 0;">
-    <div class="text-center mb-5">
-        <h1 style="font-size: 3rem; font-weight: 700; margin-bottom: 1rem; color: #1f2937;">About UNICORN BRAND</h1>
-        <p style="font-size: 1.25rem; color: #6b7280; max-width: 800px; margin: 0 auto;">Crafting exceptional footwear experiences since our founding, we believe every step should be extraordinary.</p>
-        <div style="margin: 2rem 0;">
-            <!-- Facebook Video Embed -->
-            <iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Fshare%2Fv%2F153QiEcRNFn%2F&show_text=false&width=500" width="500" height="280" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-        </div>
-    </div>
-    
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-bottom: 4rem; align-items: center;">
-        <div>
-            <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 1rem; color: #1f2937;">Our Story</h2>
-            <p style="color: #6b7280; line-height: 1.8; margin-bottom: 1rem;">
-                Founded with a passion for exceptional footwear, UNICORN BRAND has been at the forefront of shoe innovation and style. We believe that the right pair of shoes can transform not just your outfit, but your entire day.
-            </p>
-            <p style="color: #6b7280; line-height: 1.8;">
-                From our humble beginnings to becoming a trusted name in premium footwear, we've never lost sight of our core mission: to provide shoes that combine unparalleled comfort, lasting quality, and timeless style.
-            </p>
-        </div>
-        <div style="text-align: center;">
-            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 3rem; border-radius: 1rem;">
-                <i class="fas fa-shoe-prints" style="font-size: 4rem; margin-bottom: 1rem;"></i>
-                <h3 style="font-size: 1.5rem; font-weight: 600;">Premium Quality</h3>
-                <p style="opacity: 0.9;">Every pair crafted with precision and care</p>
+<!-- Start Hero Section -->
+<div class="hero">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-5">
+                <div class="intro-excerpt">
+                    <h1>About Us</h1>
+                    <p class="mb-4">Discover the story behind UNICORN BRAND - where passion for footwear meets excellence in craftsmanship.</p>
+                    <p><a href="{{ url_for('main.products') }}" class="btn btn-secondary me-2">Shop Now</a><a href="#" class="btn btn-white-outline">Explore</a></p>
+                </div>
             </div>
-        </div>
-    </div>
-    
-    <div class="grid grid-cols-3" style="margin-bottom: 4rem;">
-        <div class="text-center">
-            <div style="font-size: 3rem; color: #667eea; margin-bottom: 1rem;">
-                <i class="fas fa-award"></i>
+            <div class="col-lg-7">
+                <div class="hero-img-wrap">
+                    <img src="{{ url_for('static', filename='images/products/hero-shoe.jpg') }}" class="img-fluid" alt="Premium Footwear">
+                </div>
             </div>
-            <h3 style="font-weight: 600; margin-bottom: 0.5rem;">Excellence</h3>
-            <p style="color: #6b7280;">Committed to the highest standards in every product we create</p>
-        </div>
-        
-        <div class="text-center">
-            <div style="font-size: 3rem; color: #10b981; margin-bottom: 1rem;">
-                <i class="fas fa-leaf"></i>
-            </div>
-            <h3 style="font-weight: 600; margin-bottom: 0.5rem;">Sustainability</h3>
-            <p style="color: #6b7280;">Environmentally conscious materials and ethical manufacturing</p>
-        </div>
-        
-        <div class="text-center">
-            <div style="font-size: 3rem; color: #f59e0b; margin-bottom: 1rem;">
-                <i class="fas fa-heart"></i>
-            </div>
-            <h3 style="font-weight: 600; margin-bottom: 0.5rem;">Passion</h3>
-            <p style="color: #6b7280;">Driven by love for craftsmanship and customer satisfaction</p>
         </div>
     </div>
 </div>
+<!-- End Hero Section -->
+
+<!-- Start Why Choose Us Section -->
+<div class="why-choose-section">
+    <div class="container">
+        <div class="row justify-content-between align-items-center">
+            <div class="col-lg-6">
+                <h2 class="section-title">Why Choose Us</h2>
+                <p>At UNICORN BRAND, we believe in delivering more than just footwear. We create experiences that combine comfort, style, and quality craftsmanship.</p>
+
+                <div class="row my-5">
+                    <div class="col-6 col-md-6">
+                        <div class="feature">
+                            <div class="icon">
+                                <i class="fas fa-shipping-fast fa-2x"></i>
+                            </div>
+                            <h3>Fast & Free Shipping</h3>
+                            <p>Enjoy complimentary shipping on all orders over $100, with swift delivery to your doorstep.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-6">
+                        <div class="feature">
+                            <div class="icon">
+                                <i class="fas fa-shopping-bag fa-2x"></i>
+                            </div>
+                            <h3>Easy to Shop</h3>
+                            <p>Our user-friendly website makes finding your perfect pair of shoes a breeze.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-6">
+                        <div class="feature">
+                            <div class="icon">
+                                <i class="fas fa-headset fa-2x"></i>
+                            </div>
+                            <h3>24/7 Support</h3>
+                            <p>Our dedicated customer service team is always here to assist you with any questions.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-6">
+                        <div class="feature">
+                            <div class="icon">
+                                <i class="fas fa-undo fa-2x"></i>
+                            </div>
+                            <h3>Hassle Free Returns</h3>
+                            <p>Not the perfect fit? Our 30-day return policy ensures your satisfaction.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="img-wrap">
+                    <img src="{{ url_for('static', filename='images/products/featured-1.jpg') }}" alt="Featured Product" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Why Choose Us Section -->
+
+<!-- Start Team Section -->
+<div class="untree_co-section">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-lg-5 mx-auto text-center">
+                <h2 class="section-title">Our Team</h2>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Start Column 1 -->
+            <div class="col-12 col-md-6 col-lg-3 mb-5 mb-md-0">
+                <img src="{{ url_for('static', filename='images/team/person1.jpg') }}" class="img-fluid mb-5">
+                <h3><a href="#"><span class="">John</span> Smith</a></h3>
+                <span class="d-block position mb-4">CEO, Founder</span>
+                <p>Leading the vision of UNICORN BRAND with over 20 years of footwear industry expertise.</p>
+                <p class="mb-0"><a href="#" class="more dark">Learn More <span class="icon-arrow_forward"></span></a></p>
+            </div> 
+
+            <!-- Start Column 2 -->
+            <div class="col-12 col-md-6 col-lg-3 mb-5 mb-md-0">
+                <img src="{{ url_for('static', filename='images/team/person2.jpg') }}" class="img-fluid mb-5">
+                <h3><a href="#"><span class="">Sarah</span> Johnson</a></h3>
+                <span class="d-block position mb-4">Head of Design</span>
+                <p>Bringing creative vision and innovative designs to every collection we create.</p>
+                <p class="mb-0"><a href="#" class="more dark">Learn More <span class="icon-arrow_forward"></span></a></p>
+            </div> 
+
+            <!-- Start Column 3 -->
+            <div class="col-12 col-md-6 col-lg-3 mb-5 mb-md-0">
+                <img src="{{ url_for('static', filename='images/team/person3.jpg') }}" class="img-fluid mb-5">
+                <h3><a href="#"><span class="">Michael</span> Chen</a></h3>
+                <span class="d-block position mb-4">Product Manager</span>
+                <p>Ensuring the highest quality standards in every pair of shoes we produce.</p>
+                <p class="mb-0"><a href="#" class="more dark">Learn More <span class="icon-arrow_forward"></span></a></p>
+            </div> 
+
+            <!-- Start Column 4 -->
+            <div class="col-12 col-md-6 col-lg-3 mb-5 mb-md-0">
+                <img src="{{ url_for('static', filename='images/team/person4.jpg') }}" class="img-fluid mb-5">
+                <h3><a href="#"><span class="">Emma</span> Davis</a></h3>
+                <span class="d-block position mb-4">Customer Experience</span>
+                <p>Dedicated to ensuring exceptional service and customer satisfaction.</p>
+                <p class="mb-0"><a href="#" class="more dark">Learn More <span class="icon-arrow_forward"></span></a></p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Team Section -->
+
+<!-- Start Testimonial Slider -->
+<div class="testimonial-section before-footer-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 mx-auto text-center">
+                <h2 class="section-title">Testimonials</h2>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <div class="testimonial-slider-wrap text-center">
+                    <div id="testimonial-nav">
+                        <span class="prev" data-controls="prev"><span class="fa fa-chevron-left"></span></span>
+                        <span class="next" data-controls="next"><span class="fa fa-chevron-right"></span></span>
+                    </div>
+
+                    <div class="testimonial-slider">
+                        <!-- Testimonial 1 -->
+                        <div class="item">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-8 mx-auto">
+                                    <div class="testimonial-block text-center">
+                                        <blockquote class="mb-5">
+                                            <p>"The quality and comfort of UNICORN BRAND shoes are unmatched. I've never felt better about my footwear choices!"</p>
+                                        </blockquote>
+                                        <div class="author-info">
+                                            <div class="author-pic">
+                                                <img src="{{ url_for('static', filename='images/testimonials/person1.jpg') }}" alt="Maria Jones" class="img-fluid">
+                                            </div>
+                                            <h3 class="font-weight-bold">Maria Jones</h3>
+                                            <span class="position d-block mb-3">Fashion Blogger</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Testimonial 2 -->
+                        <div class="item">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-8 mx-auto">
+                                    <div class="testimonial-block text-center">
+                                        <blockquote class="mb-5">
+                                            <p>"From casual sneakers to formal shoes, UNICORN BRAND delivers exceptional quality and style every time."</p>
+                                        </blockquote>
+                                        <div class="author-info">
+                                            <div class="author-pic">
+                                                <img src="{{ url_for('static', filename='images/testimonials/person2.jpg') }}" alt="James Wilson" class="img-fluid">
+                                            </div>
+                                            <h3 class="font-weight-bold">James Wilson</h3>
+                                            <span class="position d-block mb-3">Business Professional</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Testimonial Slider -->
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Initialize testimonial slider
+    if (document.querySelector('.testimonial-slider')) {
+        var slider = tns({
+            container: '.testimonial-slider',
+            items: 1,
+            slideBy: 'page',
+            autoplay: false,
+            controlsContainer: "#testimonial-nav",
+            nav: false,
+            speed: 400,
+        });
+    }
+</script>
 {% endblock %}

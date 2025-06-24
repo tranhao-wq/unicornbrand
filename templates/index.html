@@ -38,26 +38,13 @@
         </div>
         
         {% if featured_products %}
-            <div class="grid grid-cols-4" style="margin-bottom: 3rem;">
+            <div class="product-grid-modern" style="margin-bottom: 3rem;">
                 {% for product in featured_products %}
-                    <div class="card product-card">
-                        <img src="{{ product.image_url if product.image_url and 'http' in product.image_url else url_for('static', filename='images/placeholder-shoe.jpg') }}" alt="{{ product.name }}" loading="lazy">
-                        <div class="product-info">
-                            <span class="product-category">{{ product.category.title() }}</span>
-                            <h3 class="product-title">{{ product.name }}</h3>
-                            <p class="product-price">{{ product.formatted_price() }}</p>
-                            <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 1rem;">
-                                {% if product.is_in_stock() %}
-                                    <span class="badge badge-green">In Stock</span>
-                                {% else %}
-                                    <span class="badge badge-red">Out of Stock</span>
-                                {% endif %}
-                                <span style="color: #6b7280; font-size: 0.875rem;">{{ product.get_sizes_list()|length }} sizes</span>
-                            </div>
-                            <a href="{{ url_for('main.product_detail', id=product.id) }}" class="btn-primary" style="width: 100%; text-align: center; text-decoration: none;">
-                                View Details
-                            </a>
-                        </div>
+                    <div class="product-card-modern">
+                        <img class="product-image" src="{{ product.image_url if product.image_url and 'http' in product.image_url else url_for('static', filename='images/placeholder-shoe.jpg') }}" alt="{{ product.name }}">
+                        <div class="product-name">{{ product.name }}</div>
+                        <div class="product-price">{{ product.formatted_price() }}</div>
+                        <a href="{{ url_for('main.product_detail', id=product.id) }}" class="see-more-btn">See More</a>
                     </div>
                 {% endfor %}
             </div>
