@@ -41,7 +41,7 @@
             <div class="grid grid-cols-4" style="margin-bottom: 3rem;">
                 {% for product in featured_products %}
                     <div class="card product-card">
-                        <img src="{{ product.image_url or '/static/images/placeholder-shoe.jpg' }}" alt="{{ product.name }}" loading="lazy">
+                        <img src="{{ product.image_url if product.image_url and 'http' in product.image_url else url_for('static', filename='images/placeholder-shoe.jpg') }}" alt="{{ product.name }}" loading="lazy">
                         <div class="product-info">
                             <span class="product-category">{{ product.category.title() }}</span>
                             <h3 class="product-title">{{ product.name }}</h3>
