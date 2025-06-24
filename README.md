@@ -1,6 +1,10 @@
 # UNICORN BRAND - E-commerce Web Application
 
 A professional, production-ready Python-based fullstack web application for a shoe e-commerce site.
+<<<<<<< HEAD
+=======
+## Pics
+>>>>>>> 768236fb01da289b1159d2e59cef09923f6b8059
 
 ## Features
 
@@ -234,4 +238,8 @@ For support and questions:
 
 ---
 
+<<<<<<< HEAD
 **UNICORN BRAND** - Step Into Excellence 👟✨
+=======
+**UNICORN BRAND** - Step Into Excellence 👟✨
+>>>>>>> 768236fb01da289b1159d2e59cef09923f6b8059
