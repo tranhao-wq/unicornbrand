@@ -9,8 +9,15 @@
             {{ form.hidden_tag() }}
             <div class="text-center mb-3">
                 <img src="{{ url_for('static', filename='assets/images/avatars/' ~ (current_user.avatar or 'default_avatar.png')) }}"
-                     alt="Avatar" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover;">
+                     alt="Avatar" class="rounded-circle profile-avatar" style="width: 120px; height: 120px; object-fit: cover; display: block; margin: 0 auto; transition: transform 0.25s, box-shadow 0.25s;">
             </div>
+            <style>
+            .profile-avatar:hover {
+                transform: scale(1.08);
+                box-shadow: 0 8px 32px rgba(102,126,234,0.18);
+                cursor: pointer;
+            }
+            </style>
             <div class="form-group mb-3">
                 <label class="form-label">Profile Image</label>
                 {{ form.avatar(class_="form-control") }}
