@@ -1,5 +1,7 @@
 // Main JavaScript functionality for UNICORN BRAND
 
+gsap.registerPlugin(ScrollTrigger, SplitText);
+
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize all components
     initializeAlerts();
@@ -7,6 +9,26 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeProductFilters();
     initializeImageGallery();
     initializeForms();
+
+    // Kiểm tra nếu đang ở trang chủ
+    if (window.location.pathname === '/' || window.location.pathname === '/index' || window.location.pathname === '/index.html') {
+        document.querySelectorAll('.split-animate').forEach(el => {
+            const split = new SplitText(el, { type: "chars" });
+            gsap.from(split.chars, {
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top 80%",
+                    toggleActions: "play none none none",
+                    once: true
+                },
+                opacity: 0,
+                y: 40,
+                stagger: 0.05,
+                duration: 0.6,
+                ease: "power3.out"
+            });
+        });
+    }
 });
 
 // Alert system
