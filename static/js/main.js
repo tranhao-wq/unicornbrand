@@ -1,6 +1,6 @@
 // Main JavaScript functionality for UNICORN BRAND
 
-gsap.registerPlugin(ScrollTrigger, SplitText);
+gsap.registerPlugin(ScrollTrigger);
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize all components
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Kiểm tra nếu đang ở trang chủ
     if (window.location.pathname === '/' || window.location.pathname === '/index' || window.location.pathname === '/index.html') {
         document.querySelectorAll('.split-animate').forEach(el => {
-            const split = new SplitText(el, { type: "chars" });
+            const split = new SplitType(el, { types: 'chars' });
             gsap.from(split.chars, {
                 scrollTrigger: {
                     trigger: el,
