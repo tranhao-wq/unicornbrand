@@ -173,12 +173,13 @@ body {
 }
 
 /* Card Styles */
-.card {
+.card, .dashboard-card {
     background: white;
     border-radius: 1rem;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     overflow: hidden;
+    z-index: 1 !important;
 }
 
 .card:hover {
@@ -1188,4 +1189,29 @@ body > *:not(.garniture-bg) {
 .hero .container.hero-flex {
   position: relative;
   z-index: 2;
+}
+
+.dropdown-menu {
+    z-index: 9999 !important;
+    position: absolute;
+    background: white;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Đảm bảo cha của dropdown không có z-index cao */
+.navbar .nav-link[onclick], .navbar .dropdown-parent {
+    position: relative !important;
+    z-index: auto !important;
+}
+
+/* Dropdown admin luôn nổi trên cùng */
+body.admin-page #user-dropdown.dropdown-menu {
+    position: fixed !important;
+    top: 70px !important;
+    right: 40px !important;
+    z-index: 99999 !important;
+}
+body:not(.admin-page) #user-dropdown.dropdown-menu {
+    position: absolute !important;
+    z-index: 99999 !important;
 }
