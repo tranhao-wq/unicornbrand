@@ -3,6 +3,8 @@ from flask_login import login_user, logout_user, login_required, current_user
 from models.user import User
 from forms.auth_forms import LoginForm, RegistrationForm, ProfileForm
 from database import db
+import os
+from werkzeug.utils import secure_filename
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -61,6 +63,14 @@ def profile():
         current_user.last_name = form.last_name.data
         current_user.phone = form.phone.data
         current_user.address = form.address.data
+        # Xử lý upload avatar
+        if form.avatar.data:
+            filename = secure_filename(form.avatar.data.filename)
+            avatar_folder = os.path.join('static', 'assets', 'images', 'avatars')
+            os.makedirs(avatar_folder, exist_ok=True)
+            avatar_path = os.path.join(avatar_folder, filename)
+            form.avatar.data.save(avatar_path)
+            current_user.avatar = filename
         db.session.commit()
         flash('Profile updated successfully!', 'success')
         return redirect(url_for('auth.profile'))

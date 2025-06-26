@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError
 from models.user import User
+from flask_wtf.file import FileField, FileAllowed
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -33,4 +34,5 @@ class ProfileForm(FlaskForm):
     last_name = StringField('Last Name', validators=[DataRequired(), Length(max=50)])
     phone = StringField('Phone', validators=[Length(max=20)])
     address = TextAreaField('Address')
+    avatar = FileField('Profile Image', validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'Images only!')])
     submit = SubmitField('Update Profile')
