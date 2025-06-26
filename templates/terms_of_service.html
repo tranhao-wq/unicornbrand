@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Terms of Service | UNICORN BRAND{% endblock %}
+{% block content %}
+<div class="container" style="max-width: 800px; margin: 3rem auto;">
+    <div class="card p-5" style="box-shadow: 0 8px 32px rgba(102,126,234,0.13); border-radius: 1.5rem; background: linear-gradient(135deg, #f8fafc 60%, #e0e7ff 100%);">
+        <h2 class="mb-4 text-center" style="color: #764ba2; font-weight: 700;">Điều Khoản Dịch Vụ</h2>
+        <ul style="font-size: 1.05rem; line-height: 1.7;">
+            <li><strong>Đặt hàng:</strong> Khách hàng cần cung cấp thông tin chính xác khi đặt hàng. Đơn hàng chỉ được xác nhận khi có thông báo từ UNICORN BRAND.</li>
+            <li><strong>Thanh toán:</strong> Chúng tôi hỗ trợ nhiều hình thức thanh toán an toàn, bảo mật.</li>
+            <li><strong>Giao hàng:</strong> Thời gian giao hàng dự kiến từ 2-5 ngày làm việc. Có thể thay đổi tùy khu vực.</li>
+            <li><strong>Đổi trả:</strong> Sản phẩm được đổi trả trong vòng 7 ngày nếu có lỗi từ nhà sản xuất hoặc giao nhầm.</li>
+            <li><strong>Liên hệ:</strong> Mọi thắc mắc về điều khoản dịch vụ, vui lòng liên hệ <a href="mailto:info@unicornbrand.com" style="color: #764ba2;">info@unicornbrand.com</a>.</li>
+        </ul>
+        <div style="margin-top: 2rem; text-align: center;">
+            <img src="{{ url_for('static', filename='assets/images/unicorn.png') }}" alt="Unicorn Brand Logo" style="height: 64px; border-radius: 50%; box-shadow: 0 2px 8px #764ba244; animation: logoPop 1.2s;">
+        </div>
+    </div>
+</div>
+<style>
+@keyframes logoPop {
+  0% { transform: scale(0.7); opacity: 0; }
+  60% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); }
+}
+.card:hover { box-shadow: 0 16px 48px rgba(118,75,162,0.18); transform: translateY(-4px) scale(1.02); transition: 0.3s; }
+</style>
+{% endblock %} 

@@ -179,7 +179,6 @@ body {
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     overflow: hidden;
-    z-index: 1 !important;
 }
 
 .card:hover {
@@ -1160,10 +1159,10 @@ html, body {
   50% { transform: scale(1.12) translateY(-18px); filter: blur(3.5px) brightness(1.13) saturate(1.18); }
   100% { transform: scale(1.08) translateY(0); filter: blur(2.5px) brightness(1.08) saturate(1.1); }
 }
-body > *:not(.garniture-bg) {
-  position: relative;
-  z-index: 1;
-}
+/* body > *:not(.garniture-bg) {
+    position: relative;
+    z-index: 1;
+} */
 
 /* --- Marquee Banner in Hero Section --- */
 .marquee-banner {
@@ -1209,9 +1208,10 @@ body.admin-page #user-dropdown.dropdown-menu {
     position: fixed !important;
     top: 70px !important;
     right: 40px !important;
-    z-index: 99999 !important;
+    left: auto !important;
+    z-index: 2147483647 !important;
 }
 body:not(.admin-page) #user-dropdown.dropdown-menu {
     position: absolute !important;
-    z-index: 99999 !important;
+    z-index: 2147483647 !important;
 }

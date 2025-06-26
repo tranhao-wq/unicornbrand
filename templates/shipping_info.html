@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Shipping Info | UNICORN BRAND{% endblock %}
+{% block content %}
+<div class="container" style="max-width: 800px; margin: 3rem auto;">
+    <div class="card p-5" style="box-shadow: 0 8px 32px rgba(66,230,149,0.13); border-radius: 1.5rem; background: linear-gradient(135deg, #f8fafc 60%, #c7f9e5 100%);">
+        <h2 class="mb-4 text-center" style="color: #42e695; font-weight: 700;">Thông Tin Giao Hàng</h2>
+        <ul style="font-size: 1.05rem; line-height: 1.7;">
+            <li><strong>Thời gian giao hàng:</strong> 2-5 ngày làm việc (có thể thay đổi tùy khu vực).</li>
+            <li><strong>Phí vận chuyển:</strong> Miễn phí cho đơn hàng từ 1.000.000đ. Đơn nhỏ hơn tính phí theo bảng giá của đối tác vận chuyển.</li>
+            <li><strong>Đối tác vận chuyển:</strong> Giao hàng nhanh, Viettel Post, J&T Express...</li>
+            <li><strong>Kiểm tra hàng:</strong> Khách hàng được kiểm tra hàng trước khi nhận.</li>
+            <li><strong>Liên hệ hỗ trợ:</strong> Nếu có vấn đề về giao hàng, vui lòng liên hệ <a href="mailto:info@unicornbrand.com" style="color: #42e695;">info@unicornbrand.com</a>.</li>
+        </ul>
+        <div style="margin-top: 2rem; text-align: center;">
+            <img src="{{ url_for('static', filename='assets/images/unicorn.png') }}" alt="Unicorn Brand Logo" style="height: 64px; border-radius: 50%; box-shadow: 0 2px 8px #42e69544; animation: logoPop 1.2s;">
+        </div>
+    </div>
+</div>
+<style>
+@keyframes logoPop {
+  0% { transform: scale(0.7); opacity: 0; }
+  60% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); }
+}
+.card:hover { box-shadow: 0 16px 48px rgba(66,230,149,0.18); transform: translateY(-4px) scale(1.02); transition: 0.3s; }
+</style>
+{% endblock %} 

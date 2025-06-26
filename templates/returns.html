@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Returns | UNICORN BRAND{% endblock %}
+{% block content %}
+<div class="container" style="max-width: 800px; margin: 3rem auto;">
+    <div class="card p-5" style="box-shadow: 0 8px 32px rgba(102,126,234,0.13); border-radius: 1.5rem; background: linear-gradient(135deg, #f8fafc 60%, #e0e7ff 100%);">
+        <h2 class="mb-4 text-center" style="color: #667eea; font-weight: 700;">Chính Sách Đổi Trả</h2>
+        <ul style="font-size: 1.05rem; line-height: 1.7;">
+            <li><strong>Thời gian đổi trả:</strong> Trong vòng 7 ngày kể từ khi nhận hàng.</li>
+            <li><strong>Điều kiện:</strong> Sản phẩm còn nguyên tem, chưa qua sử dụng, còn đầy đủ hộp và phụ kiện.</li>
+            <li><strong>Lý do đổi trả:</strong> Sản phẩm lỗi do nhà sản xuất, giao nhầm, hoặc không đúng mô tả.</li>
+            <li><strong>Quy trình:</strong> Liên hệ CSKH qua email <a href="mailto:info@unicornbrand.com" style="color: #667eea;">info@unicornbrand.com</a> để được hướng dẫn chi tiết.</li>
+        </ul>
+        <div style="margin-top: 2rem; text-align: center;">
+            <img src="{{ url_for('static', filename='assets/images/unicorn.png') }}" alt="Unicorn Brand Logo" style="height: 64px; border-radius: 50%; box-shadow: 0 2px 8px #667eea44; animation: logoPop 1.2s;">
+        </div>
+    </div>
+</div>
+<style>
+@keyframes logoPop {
+  0% { transform: scale(0.7); opacity: 0; }
+  60% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); }
+}
+.card:hover { box-shadow: 0 16px 48px rgba(102,126,234,0.18); transform: translateY(-4px) scale(1.02); transition: 0.3s; }
+</style>
+{% endblock %} 

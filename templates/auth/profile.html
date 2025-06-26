@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Profile | UNICORN BRAND{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 600px; margin: 2rem auto;">
+    <h2 class="mb-4 text-center">My Profile</h2>
+    <div class="card p-4">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <div class="form-group mb-3">
+                <label class="form-label">Full Name</label>
+                {{ form.full_name(class_="form-control", placeholder="Your full name") }}
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label">Email</label>
+                {{ form.email(class_="form-control", placeholder="Your email") }}
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label">Phone</label>
+                {{ form.phone(class_="form-control", placeholder="Your phone number") }}
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label">Address</label>
+                {{ form.address(class_="form-control", placeholder="Your address") }}
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Update Profile</button>
+        </form>
+    </div>
+</div>
+{% endblock %} 

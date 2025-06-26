@@ -28,7 +28,29 @@ def create_app():
     # Create tables
     with app.app_context():
         db.create_all()
-    
+
+    # Add Privacy Policy and Terms of Service routes
+    @app.route('/privacy_policy')
+    def privacy_policy():
+        return render_template('privacy_policy.html')
+
+    @app.route('/terms_of_service')
+    def terms_of_service():
+        return render_template('terms_of_service.html')
+
+    # Add Shipping Info, Returns, Size Guide routes
+    @app.route('/shipping_info')
+    def shipping_info():
+        return render_template('shipping_info.html')
+
+    @app.route('/returns')
+    def returns():
+        return render_template('returns.html')
+
+    @app.route('/size_guide')
+    def size_guide():
+        return render_template('size_guide.html')
+
     return app
 
 
