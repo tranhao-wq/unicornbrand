@@ -5,20 +5,22 @@
 <!-- Hero Section -->
 <section class="hero" style="position: relative; overflow: hidden;">
     <div class="marquee-banner"></div>
-    <div class="container hero-flex">
-        <div style="flex: 0 0 auto; text-align: left;">
-            <iframe 
-                class="fb-video-animate-bounce"
-                src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Fbrand.unicorn%2Fvideos%2F645892074791757%2F&show_text=true&width=267&t=0" 
-                width="267" 
-                height="591" 
-                style="border:none;overflow:hidden" 
-                scrolling="no" 
-                frameborder="0" 
-                allowfullscreen="true" 
-                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" 
-                allowFullScreen="true">
-            </iframe>
+    <div class="container hero-flex" style="flex-wrap: wrap; justify-content: center; align-items: center; gap: 2rem;">
+        <div style="flex: 0 0 auto; display: flex; justify-content: center; align-items: center; margin-top: 2.5rem; margin-bottom: 2rem;">
+            <div style="background: white; border-radius: 1.25rem; box-shadow: 0 4px 24px rgba(66,230,149,0.13); padding: 0.5rem; border: 3px solid #42e695; max-width: 320px; width: 100%; display: flex; justify-content: center; align-items: center;">
+                <iframe 
+                    class="fb-video-animate-bounce"
+                    src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Fbrand.unicorn%2Fvideos%2F645892074791757%2F&show_text=true&width=267&t=0" 
+                    width="267" 
+                    height="476" 
+                    style="border:none;overflow:hidden; display: block; margin: 0 auto; border-radius: 1rem; max-width: 100%;"
+                    scrolling="no" 
+                    frameborder="0" 
+                    allowfullscreen="true" 
+                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" 
+                    allowFullScreen="true">
+                </iframe>
+            </div>
         </div>
         <div style="flex: 1 1 350px; min-width: 300px; text-align: center;">
             <h1 class="split-animate">Step Into Excellence</h1>
@@ -135,4 +137,18 @@
         </div>
     </div>
 </section>
+
+<style>
+@media (max-width: 600px) {
+  .hero-flex > div:first-child {
+    margin-top: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+  .hero-flex iframe {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 320px !important;
+  }
+}
+</style>
 {% endblock %}
