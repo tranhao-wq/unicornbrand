@@ -95,26 +95,26 @@
 </div>
 
 <!-- Slideshow container -->
-<div class="slideshow-container" style="margin: 3rem auto 2rem auto;">
+<div class="slideshow-container" style="margin: 2rem auto 1rem auto; max-width: 600px;">
   <div class="mySlides fade">
-    <img src="{{ url_for('static', filename='assets/images/garniture.jpg') }}" style="width:100%">
-    <div class="text">Garniture 1 - Featured Product</div>
+    <img src="{{ url_for('static', filename='assets/images/garniture.jpg') }}" style="width:100%; max-height: 220px; object-fit: cover;">
+    <div class="text" style="font-size: 1rem;">Garniture 1 - Featured Product</div>
   </div>
   <div class="mySlides fade">
-    <img src="{{ url_for('static', filename='assets/images/garniture2.jpg') }}" style="width:100%">
-    <div class="text">Garniture 2 - Special Edition</div>
+    <img src="{{ url_for('static', filename='assets/images/garniture2.jpg') }}" style="width:100%; max-height: 220px; object-fit: cover;">
+    <div class="text" style="font-size: 1rem;">Garniture 2 - Special Edition</div>
   </div>
   <div class="mySlides fade">
-    <img src="{{ url_for('static', filename='assets/images/tower.jpg') }}" style="width:100%">
-    <div class="text">Tower - Iconic Design</div>
+    <img src="{{ url_for('static', filename='assets/images/tower.jpg') }}" style="width:100%; max-height: 220px; object-fit: cover;">
+    <div class="text" style="font-size: 1rem;">Tower - Iconic Design</div>
   </div>
   <div class="mySlides fade">
-    <img src="{{ url_for('static', filename='assets/images/tower2.jpg') }}" style="width:100%">
-    <div class="text">Tower 2 - Limited Edition</div>
+    <img src="{{ url_for('static', filename='assets/images/tower2.jpg') }}" style="width:100%; max-height: 220px; object-fit: cover;">
+    <div class="text" style="font-size: 1rem;">Tower 2 - Limited Edition</div>
   </div>
   <div class="mySlides fade">
-    <img src="{{ url_for('static', filename='assets/images/unicorn.png') }}" style="width:100%">
-    <div class="text">Unicorn - Brand Spirit</div>
+    <img src="{{ url_for('static', filename='assets/images/unicorn.png') }}" style="width:100%; max-height: 220px; object-fit: cover;">
+    <div class="text" style="font-size: 1rem;">Unicorn - Brand Spirit</div>
   </div>
   <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
   <a class="next" onclick="plusSlides(1)">&#10095;</a>
@@ -135,7 +135,7 @@
   100% { transform: scale(1); }
 }
 .slideshow-container {
-  max-width: 1000px;
+  max-width: 600px;
   position: relative;
   margin: auto;
 }
@@ -146,10 +146,10 @@
   top: 50%;
   width: auto;
   margin-top: -22px;
-  padding: 16px;
+  padding: 12px;
   color: white;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px;
   transition: 0.6s ease;
   border-radius: 0 3px 3px 0;
   user-select: none;
@@ -158,19 +158,19 @@
 .prev:hover, .next:hover { background-color: rgba(0,0,0,0.8); }
 .text {
   color: #f2f2f2;
-  font-size: 1.2rem;
-  padding: 8px 12px;
+  font-size: 1rem;
+  padding: 6px 10px;
   position: absolute;
   bottom: 8px;
   width: 100%;
   text-align: center;
   background: rgba(0,0,0,0.3);
-  border-radius: 0 0 12px 12px;
+  border-radius: 0 0 10px 10px;
 }
 .dot {
   cursor: pointer;
-  height: 15px;
-  width: 15px;
+  height: 12px;
+  width: 12px;
   margin: 0 2px;
   background-color: #bbb;
   border-radius: 50%;
