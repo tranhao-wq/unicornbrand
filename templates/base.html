@@ -212,6 +212,183 @@
     }
     </style>
     
+    <!-- Music Player -->
+    <div id="music-player" class="music-player">
+      <div class="music-info">
+        <span id="music-title">Loading...</span>
+        <button id="music-hide" title="Hide Player">&times;</button>
+      </div>
+      <audio id="audio" preload="auto"></audio>
+      <div class="music-controls">
+        <button id="music-prev" title="Previous">&#9198;</button>
+        <button id="music-play" title="Play">&#9654;</button>
+        <button id="music-next" title="Next">&#9197;</button>
+        <input type="range" id="music-progress" value="0" min="0" max="100" step="1">
+      </div>
+    </div>
+    <button id="music-show" class="music-show-btn" title="Show Player" style="display:none;">🎵</button>
+
+    <style>
+    .music-player {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      width: 320px;
+      background: #232b35;
+      color: #fff;
+      border-radius: 1.2rem;
+      box-shadow: 0 4px 24px #667eea22;
+      z-index: 9999;
+      padding: 1rem 1.2rem 0.7rem 1.2rem;
+      transition: transform 0.4s cubic-bezier(.4,2,.6,1), opacity 0.3s;
+      font-family: inherit;
+    }
+    .music-player.hide {
+      transform: translateX(120%) scale(0.95);
+      opacity: 0.2;
+      pointer-events: none;
+    }
+    .music-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    #music-hide {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.3rem;
+      cursor: pointer;
+      margin-left: 0.5rem;
+      transition: color 0.2s;
+    }
+    #music-hide:hover { color: #42e695; }
+    .music-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .music-controls button {
+      background: #3bb2b8;
+      border: none;
+      color: #fff;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .music-controls button:hover { background: #42e695; }
+    #music-progress {
+      flex: 1;
+      margin-left: 0.5rem;
+      accent-color: #42e695;
+    }
+    .music-show-btn {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 9999;
+      background: #42e695;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 24px #42e69544;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .music-show-btn:hover { background: #3bb2b8; }
+    </style>
+
+    <script>
+    const musicList = [
+      {
+        title: "Gucci Mane, Bruno Mars, Kodak Black - Wake Up in The Sky",
+        src: "{{ url_for('static', filename='assets/musics/Gucci Mane, Bruno Mars, Kodak Black - Wake Up in The Sky [Official Music Video] - Gucci Mane.mp3') }}"
+      },
+      {
+        title: "Ordinary Girl - Ahv",
+        src: "{{ url_for('static', filename='assets/musics/Ordinary Girl - Ahv.mp3') }}"
+      },
+      {
+        title: "SƠN TÙNG M-TP - CHÚNG TA CỦA TƯƠNG LAI",
+        src: "{{ url_for('static', filename='assets/musics/SƠN TÙNG M-TP  CHÚNG TA CỦA TƯƠNG LAI  OFFICIAL MUSIC VIDEO - Sơn Tùng M-TP Official.mp3') }}"
+      },
+      {
+        title: "Tanir & Tyomcha - Da Da Da (Live)",
+        src: "{{ url_for('static', filename='assets/musics/Tanir & Tyomcha - Da Da Da (Live) - Da Gudda Music.mp3') }}"
+      }
+    ];
+    let current = 0;
+    const audio = document.getElementById('audio');
+    const title = document.getElementById('music-title');
+    const playBtn = document.getElementById('music-play');
+    const nextBtn = document.getElementById('music-next');
+    const prevBtn = document.getElementById('music-prev');
+    const progress = document.getElementById('music-progress');
+    const hideBtn = document.getElementById('music-hide');
+    const showBtn = document.getElementById('music-show');
+    const player = document.getElementById('music-player');
+    function loadSong(idx) {
+      audio.src = musicList[idx].src;
+      title.textContent = musicList[idx].title;
+      audio.load();
+      progress.value = 0;
+    }
+    function playSong() {
+      audio.play();
+      playBtn.innerHTML = '&#10073;&#10073;'; // pause icon
+    }
+    function pauseSong() {
+      audio.pause();
+      playBtn.innerHTML = '&#9654;'; // play icon
+    }
+    playBtn.onclick = () => {
+      if (audio.paused) playSong();
+      else pauseSong();
+    };
+    nextBtn.onclick = () => {
+      current = (current + 1) % musicList.length;
+      loadSong(current);
+      playSong();
+    };
+    prevBtn.onclick = () => {
+      current = (current - 1 + musicList.length) % musicList.length;
+      loadSong(current);
+      playSong();
+    };
+    audio.onended = () => {
+      nextBtn.onclick();
+    };
+    audio.ontimeupdate = () => {
+      if (audio.duration) progress.value = (audio.currentTime / audio.duration) * 100;
+    };
+    progress.oninput = () => {
+      if (audio.duration) audio.currentTime = (progress.value / 100) * audio.duration;
+    };
+    hideBtn.onclick = () => {
+      player.classList.add('hide');
+      showBtn.style.display = 'flex';
+    };
+    showBtn.onclick = () => {
+      player.classList.remove('hide');
+      showBtn.style.display = 'none';
+    };
+    window.addEventListener('DOMContentLoaded', () => {
+      loadSong(current);
+    });
+    </script>
+    
     {% block extra_js %}{% endblock %}
 </body>
 </html>
