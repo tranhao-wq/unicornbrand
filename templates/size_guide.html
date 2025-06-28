@@ -1,39 +1,64 @@
 {% extends 'base.html' %}
 {% block title %}Size Guide | UNICORN BRAND{% endblock %}
 {% block content %}
-<div class="container" style="max-width: 800px; margin: 3rem auto;">
-    <div class="card p-5" style="box-shadow: 0 8px 32px rgba(59,178,184,0.13); border-radius: 1.5rem; background: linear-gradient(135deg, #f8fafc 60%, #c7f9e5 100%);">
-        <h2 class="mb-4 text-center" style="color: #3bb2b8; font-weight: 700;">Bảng Size & Hướng Dẫn Chọn Size</h2>
-        <div style="overflow-x: auto;">
-        <table class="table table-bordered" style="background: white; border-radius: 0.75rem;">
-            <thead style="background: #3bb2b8; color: white;">
-                <tr>
-                    <th>Size VN</th>
-                    <th>Chiều dài chân (cm)</th>
-                    <th>Size US</th>
-                    <th>Size EU</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>36</td><td>22.5</td><td>5.5</td><td>36</td></tr>
-                <tr><td>37</td><td>23.1</td><td>6</td><td>37</td></tr>
-                <tr><td>38</td><td>23.8</td><td>7</td><td>38</td></tr>
-                <tr><td>39</td><td>24.5</td><td>8</td><td>39</td></tr>
-                <tr><td>40</td><td>25.1</td><td>8.5</td><td>40</td></tr>
-                <tr><td>41</td><td>25.7</td><td>9</td><td>41</td></tr>
-                <tr><td>42</td><td>26.4</td><td>10</td><td>42</td></tr>
-                <tr><td>43</td><td>27.0</td><td>10.5</td><td>43</td></tr>
-                <tr><td>44</td><td>27.7</td><td>11</td><td>44</td></tr>
-            </tbody>
-        </table>
+<!-- Hero Banner -->
+<div class="size-hero" style="background: linear-gradient(120deg, #667eea 0%, #42e695 100%); padding: 3.5rem 0 2.5rem 0; border-radius: 0 0 2.5rem 2.5rem; box-shadow: 0 8px 32px rgba(102,126,234,0.13); text-align: center; position: relative; overflow: hidden;">
+    <!-- Decorative SVG background -->
+    <svg style="position:absolute;top:-60px;left:-60px;z-index:0;opacity:0.15;" width="220" height="220"><circle cx="110" cy="110" r="110" fill="#42e695"/></svg>
+    <svg style="position:absolute;bottom:-80px;right:-80px;z-index:0;opacity:0.10;" width="260" height="260"><circle cx="130" cy="130" r="130" fill="#667eea"/></svg>
+    <img src="{{ url_for('static', filename='assets/images/unicorn.png') }}" alt="Unicorn Brand Logo" style="height: 90px; border-radius: 50%; box-shadow: 0 2px 24px #42e69588; margin-bottom: 1rem; animation: logoPop 1.2s; position:relative; z-index:1;">
+    <h1 class="size-title" style="color: #fff; font-weight: 900; font-size: 2.8rem; letter-spacing: 1px; margin-bottom: 0.5rem; text-shadow: 0 2px 16px #667eea88; position:relative; z-index:1;">Size Guide</h1>
+    <p style="color: #e0f7ef; font-size: 1.25rem; max-width: 600px; margin: 0 auto; position:relative; z-index:1;">Find your perfect fit with our easy-to-use size chart and measurement tips.</p>
+    <span style="color: #ffe066; font-weight: 600; font-size: 1.1rem; display: block; margin-top: 0.5rem; letter-spacing: 0.5px; position:relative; z-index:1;">"Comfort starts with the right size!"</span>
+</div>
+
+<div class="container" style="max-width: 950px; margin: 3rem auto;">
+    <div class="card p-5" style="box-shadow: 0 8px 32px rgba(102,126,234,0.13); border-radius: 1.5rem; background: linear-gradient(135deg, #f8fafc 60%, #e0e7ff 100%);">
+        <h2 class="mb-4 text-center" style="color: #667eea; font-weight: 800; font-size: 2rem;">Bảng Size & Hướng Dẫn Chọn Size</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 2.5rem; justify-content: center; align-items: flex-start;">
+            <!-- Size Table -->
+            <div style="flex: 1 1 340px; min-width: 320px;">
+                <div style="overflow-x: auto;">
+                <table class="table table-bordered" style="background: white; border-radius: 0.75rem; box-shadow: 0 2px 16px #667eea22;">
+                    <thead style="background: #667eea; color: white;">
+                        <tr>
+                            <th>Size VN</th>
+                            <th>Chiều dài chân (cm)</th>
+                            <th>Size US</th>
+                            <th>Size EU</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>36</td><td>22.5</td><td>5.5</td><td>36</td></tr>
+                        <tr><td>37</td><td>23.1</td><td>6</td><td>37</td></tr>
+                        <tr><td>38</td><td>23.8</td><td>7</td><td>38</td></tr>
+                        <tr><td>39</td><td>24.5</td><td>8</td><td>39</td></tr>
+                        <tr><td>40</td><td>25.1</td><td>8.5</td><td>40</td></tr>
+                        <tr><td>41</td><td>25.7</td><td>9</td><td>41</td></tr>
+                        <tr><td>42</td><td>26.4</td><td>10</td><td>42</td></tr>
+                        <tr><td>43</td><td>27.0</td><td>10.5</td><td>43</td></tr>
+                        <tr><td>44</td><td>27.7</td><td>11</td><td>44</td></tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+            <!-- Foot Measurement Illustration -->
+            <div style="flex: 1 1 260px; min-width: 220px; text-align: center;">
+                <img src="https://cdn-icons-png.flaticon.com/512/1046/1046857.png" alt="Foot Measurement" style="height: 120px; margin-bottom: 1rem; filter: drop-shadow(0 2px 8px #42e69544);">
+                <div style="color: #3bb2b8; font-weight: 700; font-size: 1.1rem; margin-bottom: 0.5rem;">Cách đo chân chuẩn</div>
+                <ol style="color: #444; font-size: 1.02rem; text-align: left; display: inline-block; margin: 0 auto; padding-left: 1.2rem;">
+                    <li>Đặt chân lên giấy trắng, vẽ viền bàn chân.</li>
+                    <li>Đo chiều dài lớn nhất từ gót đến đầu ngón dài nhất.</li>
+                    <li>So sánh số đo với bảng size bên cạnh.</li>
+                </ol>
+            </div>
         </div>
-        <ul style="font-size: 1.05rem; line-height: 1.7; margin-top: 1.5rem;">
-            <li><strong>Cách đo chân:</strong> Đặt chân lên giấy, vẽ viền, đo chiều dài lớn nhất rồi đối chiếu bảng size.</li>
+        <ul style="font-size: 1.08rem; line-height: 1.7; margin-top: 2rem; color: #444;">
             <li><strong>Tips:</strong> Nếu chân bạn nằm giữa 2 size, hãy chọn size lớn hơn để thoải mái hơn.</li>
-            <li><strong>Hỗ trợ:</strong> Liên hệ <a href="mailto:info@unicornbrand.com" style="color: #3bb2b8;">info@unicornbrand.com</a> để được tư vấn chọn size.</li>
+            <li><strong>Hỗ trợ:</strong> Liên hệ <a href="mailto:info@unicornbrand.com" style="color: #667eea;">info@unicornbrand.com</a> để được tư vấn chọn size.</li>
         </ul>
-        <div style="margin-top: 2rem; text-align: center;">
-            <img src="{{ url_for('static', filename='assets/images/unicorn.png') }}" alt="Unicorn Brand Logo" style="height: 64px; border-radius: 50%; box-shadow: 0 2px 8px #3bb2b844; animation: logoPop 1.2s;">
+        <div style="margin-top: 2.5rem; text-align: center;">
+            <img src="{{ url_for('static', filename='assets/images/unicorn.png') }}" alt="Unicorn Brand Logo" style="height: 64px; border-radius: 50%; box-shadow: 0 2px 8px #667eea44; animation: logoPop 1.2s;">
         </div>
     </div>
 </div>
@@ -43,6 +68,11 @@
   60% { transform: scale(1.1); opacity: 1; }
   100% { transform: scale(1); }
 }
-.card:hover { box-shadow: 0 16px 48px rgba(59,178,184,0.18); transform: translateY(-4px) scale(1.02); transition: 0.3s; }
+.card:hover { box-shadow: 0 16px 48px rgba(102,126,234,0.18); transform: translateY(-4px) scale(1.02); transition: 0.3s; }
+.size-title { animation: fadeInUp 1.2s; }
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(40px);}
+  100% { opacity: 1; transform: translateY(0);}
+}
 </style>
 {% endblock %} 
