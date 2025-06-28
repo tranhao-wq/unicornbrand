@@ -3,7 +3,20 @@ import './FallingText.css';
 
 function App() {
   return (
-    <div className="App" style={{ background: 'transparent', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <div
+      className="App"
+      style={{
+        background: 'transparent',
+        minHeight: 'unset',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100vw',
+        height: '180px',
+        maxWidth: '1200px',
+        margin: '0 auto',
+      }}
+    >
       <FallingText
         text={`React Bits is a library of animated and interactive React components designed to streamline UI development and simplify your workflow.`}
         highlightWords={["React", "Bits", "animated", "components", "simplify"]}
@@ -12,7 +25,7 @@ function App() {
         backgroundColor="transparent"
         wireframes={false}
         gravity={0.56}
-        fontSize="2rem"
+        fontSize="3.5rem"
         mouseConstraintStiffness={0.9}
       />
     </div>
