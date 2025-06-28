@@ -434,5 +434,52 @@
     </script>
     
     {% block extra_js %}{% endblock %}
+
+    <script>
+    const lastNames = [
+      "Nguyễn", "Trần", "Lê", "Phạm", "Hoàng", "Huỳnh", "Phan", "Vũ", "Võ", "Đặng", "Bùi", "Đỗ", "Hồ", "Ngô", "Dương", "Lý"
+    ];
+    const middleNames = [
+      "Văn", "Thị", "Minh", "Quốc", "Hữu", "Gia", "Ngọc", "Thanh", "Thành", "Xuân", "Đức", "Trọng", "Phúc", "Tuấn", "Thảo", "Hải"
+    ];
+    const firstNames = [
+      "Anh", "Bình", "Châu", "Dũng", "Hà", "Hạnh", "Hòa", "Hùng", "Khánh", "Lan", "Linh", "Mai", "Nam", "Ngân", "Phát", "Phương", "Quang", "Sơn", "Thảo", "Thành", "Thắng", "Trang", "Trung", "Tú", "Tuấn", "Vy", "Yến"
+    ];
+    const vnCities = [
+      "Hà Nội", "Hồ Chí Minh", "Đà Nẵng", "Cần Thơ", "Hải Phòng", "Nha Trang", "Huế", "Biên Hòa", "Vũng Tàu", "Buôn Ma Thuột"
+    ];
+    const products = [
+      "Unicorn Sneakers", "Garniture Boots", "Tower Sandals", "Unicorn Classic", "Special Edition Shoes", "Brand Spirit Loafers"
+    ];
+    function randomItem(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+    function randomVNName() {
+      return `${randomItem(lastNames)} ${randomItem(middleNames)} ${randomItem(firstNames)}`;
+    }
+    function showPurchaseNotification() {
+      const name = randomVNName();
+      const city = randomItem(vnCities);
+      const product = randomItem(products);
+      const message = `<span style=\"color:#42e695;\">${name}</span> from <span style=\"color:#667eea;\">${city}</span> just bought <span style=\"color:#764ba2;\">${product}</span>!`;
+      const notif = document.getElementById('purchase-notification');
+      const msg = document.getElementById('purchase-message');
+      msg.innerHTML = message;
+      notif.style.display = 'flex';
+      notif.style.animation = 'slideIn 0.7s cubic-bezier(.4,2,.6,1)';
+      setTimeout(() => { notif.style.display = 'none'; }, 6000);
+    }
+    function scheduleNextNotification() {
+      const interval = Math.random() * 40000 + 20000; // 20s to 60s
+      setTimeout(() => {
+        showPurchaseNotification();
+        scheduleNextNotification();
+      }, interval);
+    }
+    document.getElementById('purchase-close').onclick = function() {
+      document.getElementById('purchase-notification').style.display = 'none';
+    };
+    window.addEventListener('DOMContentLoaded', () => {
+      scheduleNextNotification();
+    });
+    </script>
 </body>
 </html>
