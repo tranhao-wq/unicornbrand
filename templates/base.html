@@ -339,6 +339,20 @@
     const hideBtn = document.getElementById('music-hide');
     const showBtn = document.getElementById('music-show');
     const player = document.getElementById('music-player');
+
+    function savePlayerState() {
+      localStorage.setItem('musicPlayerState', JSON.stringify({
+        current,
+        time: audio.currentTime,
+        playing: !audio.paused,
+        hidden: player.classList.contains('hide')
+      }));
+    }
+    function loadPlayerState() {
+      const state = localStorage.getItem('musicPlayerState');
+      if (!state) return null;
+      try { return JSON.parse(state); } catch { return null; }
+    }
     function loadSong(idx) {
       audio.src = musicList[idx].src;
       title.textContent = musicList[idx].title;
@@ -356,36 +370,66 @@
     playBtn.onclick = () => {
       if (audio.paused) playSong();
       else pauseSong();
+      savePlayerState();
     };
     nextBtn.onclick = () => {
       current = (current + 1) % musicList.length;
       loadSong(current);
       playSong();
+      savePlayerState();
     };
     prevBtn.onclick = () => {
       current = (current - 1 + musicList.length) % musicList.length;
       loadSong(current);
       playSong();
+      savePlayerState();
     };
     audio.onended = () => {
       nextBtn.onclick();
     };
     audio.ontimeupdate = () => {
       if (audio.duration) progress.value = (audio.currentTime / audio.duration) * 100;
+      savePlayerState();
     };
     progress.oninput = () => {
       if (audio.duration) audio.currentTime = (progress.value / 100) * audio.duration;
+      savePlayerState();
     };
     hideBtn.onclick = () => {
       player.classList.add('hide');
       showBtn.style.display = 'flex';
+      savePlayerState();
     };
     showBtn.onclick = () => {
       player.classList.remove('hide');
       showBtn.style.display = 'none';
+      savePlayerState();
     };
     window.addEventListener('DOMContentLoaded', () => {
-      loadSong(current);
+      const state = loadPlayerState();
+      if (state) {
+        current = state.current || 0;
+        loadSong(current);
+        audio.currentTime = state.time || 0;
+        if (state.hidden) {
+          player.classList.add('hide');
+          showBtn.style.display = 'flex';
+        } else {
+          player.classList.remove('hide');
+          showBtn.style.display = 'none';
+        }
+        if (state.playing) {
+          // Wait for audio to be ready before playing
+          audio.oncanplay = () => {
+            playSong();
+            audio.oncanplay = null;
+          };
+        } else {
+          pauseSong();
+        }
+      } else {
+        loadSong(current);
+      }
     });
     </script>
     
