@@ -94,102 +94,38 @@
   </div>
 </div>
 
-<!-- Testimonial Slider -->
-<div class="testimonial-section before-footer-section" style="margin-top:4rem;">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-7 mx-auto text-center">
-        <h2 class="section-title">Testimonials</h2>
-      </div>
-    </div>
-    <div class="row justify-content-center">
-      <div class="col-lg-12">
-        <div class="testimonial-slider-wrap text-center">
-          <div id="testimonial-nav">
-            <span class="prev" data-controls="prev"><span class="fa fa-chevron-left"></span></span>
-            <span class="next" data-controls="next"><span class="fa fa-chevron-right"></span></span>
-          </div>
-          <div class="testimonial-slider">
-            <div class="item">
-              <div class="row justify-content-center">
-                <div class="col-lg-8 mx-auto">
-                  <div class="testimonial-block text-center">
-                    <div class="author-info">
-                      <div class="author-pic">
-                        <img src="{{ url_for('static', filename='assets/images/garniture.jpg') }}" alt="Garniture 1" class="img-fluid">
-                      </div>
-                      <h3 class="font-weight-bold mt-3">Garniture 1</h3>
-                      <span class="position d-block mb-3">Featured Product</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="row justify-content-center">
-                <div class="col-lg-8 mx-auto">
-                  <div class="testimonial-block text-center">
-                    <div class="author-info">
-                      <div class="author-pic">
-                        <img src="{{ url_for('static', filename='assets/images/garniture2.jpg') }}" alt="Garniture 2" class="img-fluid">
-                      </div>
-                      <h3 class="font-weight-bold mt-3">Garniture 2</h3>
-                      <span class="position d-block mb-3">Special Edition</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="row justify-content-center">
-                <div class="col-lg-8 mx-auto">
-                  <div class="testimonial-block text-center">
-                    <div class="author-info">
-                      <div class="author-pic">
-                        <img src="{{ url_for('static', filename='assets/images/tower.jpg') }}" alt="Tower" class="img-fluid">
-                      </div>
-                      <h3 class="font-weight-bold mt-3">Tower</h3>
-                      <span class="position d-block mb-3">Iconic Design</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="row justify-content-center">
-                <div class="col-lg-8 mx-auto">
-                  <div class="testimonial-block text-center">
-                    <div class="author-info">
-                      <div class="author-pic">
-                        <img src="{{ url_for('static', filename='assets/images/tower2.jpg') }}" alt="Tower 2" class="img-fluid">
-                      </div>
-                      <h3 class="font-weight-bold mt-3">Tower 2</h3>
-                      <span class="position d-block mb-3">Limited Edition</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="row justify-content-center">
-                <div class="col-lg-8 mx-auto">
-                  <div class="testimonial-block text-center">
-                    <div class="author-info">
-                      <div class="author-pic">
-                        <img src="{{ url_for('static', filename='assets/images/unicorn.png') }}" alt="Unicorn" class="img-fluid">
-                      </div>
-                      <h3 class="font-weight-bold mt-3">Unicorn</h3>
-                      <span class="position d-block mb-3">Brand Spirit</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+<!-- Slideshow container -->
+<div class="slideshow-container" style="margin: 3rem auto 2rem auto;">
+  <div class="mySlides fade">
+    <img src="{{ url_for('static', filename='assets/images/garniture.jpg') }}" style="width:100%">
+    <div class="text">Garniture 1 - Featured Product</div>
   </div>
+  <div class="mySlides fade">
+    <img src="{{ url_for('static', filename='assets/images/garniture2.jpg') }}" style="width:100%">
+    <div class="text">Garniture 2 - Special Edition</div>
+  </div>
+  <div class="mySlides fade">
+    <img src="{{ url_for('static', filename='assets/images/tower.jpg') }}" style="width:100%">
+    <div class="text">Tower - Iconic Design</div>
+  </div>
+  <div class="mySlides fade">
+    <img src="{{ url_for('static', filename='assets/images/tower2.jpg') }}" style="width:100%">
+    <div class="text">Tower 2 - Limited Edition</div>
+  </div>
+  <div class="mySlides fade">
+    <img src="{{ url_for('static', filename='assets/images/unicorn.png') }}" style="width:100%">
+    <div class="text">Unicorn - Brand Spirit</div>
+  </div>
+  <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+  <a class="next" onclick="plusSlides(1)">&#10095;</a>
+</div>
+<br>
+<div style="text-align:center">
+  <span class="dot" onclick="currentSlide(1)"></span>
+  <span class="dot" onclick="currentSlide(2)"></span>
+  <span class="dot" onclick="currentSlide(3)"></span>
+  <span class="dot" onclick="currentSlide(4)"></span>
+  <span class="dot" onclick="currentSlide(5)"></span>
 </div>
 
 <style>
@@ -198,24 +134,80 @@
   60% { transform: scale(1.1); opacity: 1; }
   100% { transform: scale(1); }
 }
+.slideshow-container {
+  max-width: 1000px;
+  position: relative;
+  margin: auto;
+}
+.mySlides { display: none; }
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  margin-top: -22px;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+.next { right: 0; border-radius: 3px 0 0 3px; }
+.prev:hover, .next:hover { background-color: rgba(0,0,0,0.8); }
+.text {
+  color: #f2f2f2;
+  font-size: 1.2rem;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+  background: rgba(0,0,0,0.3);
+  border-radius: 0 0 12px 12px;
+}
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+.active, .dot:hover { background-color: #717171; }
+.fade { animation-name: fade; animation-duration: 1.5s; }
+@keyframes fade { from {opacity: .4} to {opacity: 1} }
 </style>
-{% endblock %}
 
-{% block extra_js %}
 <script>
-    // Initialize testimonial slider
-    if (document.querySelector('.testimonial-slider')) {
-        var slider = tns({
-            container: '.testimonial-slider',
-            items: 1,
-            slideBy: 'page',
-            autoplay: true,
-            autoplayTimeout: 3000,
-            autoplayButtonOutput: false,
-            controlsContainer: "#testimonial-nav",
-            nav: false,
-            speed: 400,
-        });
-    }
+let slideIndex = 0;
+showSlides();
+function showSlides() {
+  let i;
+  let slides = document.getElementsByClassName("mySlides");
+  let dots = document.getElementsByClassName("dot");
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+  slideIndex++;
+  if (slideIndex > slides.length) {slideIndex = 1}
+  for (i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";
+  dots[slideIndex-1].className += " active";
+  setTimeout(showSlides, 3500); // Change image every 3.5 seconds
+}
+function plusSlides(n) {
+  slideIndex += n - 1;
+  showSlides();
+}
+function currentSlide(n) {
+  slideIndex = n - 1;
+  showSlides();
+}
 </script>
 {% endblock %}
