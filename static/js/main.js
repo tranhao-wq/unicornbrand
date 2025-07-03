@@ -29,6 +29,17 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+    // Realtime product update via SocketIO
+    if (typeof io !== 'undefined') {
+        var socket = io.connect(window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : ''));
+        socket.on('product_update', function(data) {
+            // Nếu đang ở trang sản phẩm, tự động reload
+            if (window.location.pathname.startsWith('/products')) {
+                location.reload();
+            }
+        });
+    }
 });
 
 // Alert system

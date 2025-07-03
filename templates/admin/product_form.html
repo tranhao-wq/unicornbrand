@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="container" style="padding: 2rem 0; max-width: 600px;">
+    <h1 style="font-size: 2rem; font-weight: 700; color: #1f2937; margin-bottom: 2rem;">{{ title }}</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.name.label(class="form-label") }}
+            {{ form.name(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.description.label(class="form-label") }}
+            {{ form.description(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.price.label(class="form-label") }}
+            {{ form.price(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.category.label(class="form-label") }}
+            {{ form.category(class="form-control form-select") }}
+        </div>
+        <div class="form-group">
+            {{ form.brand.label(class="form-label") }}
+            {{ form.brand(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.image_url.label(class="form-label") }}
+            {{ form.image_url(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.stock_quantity.label(class="form-label") }}
+            {{ form.stock_quantity(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.sizes.label(class="form-label") }}
+            {{ form.sizes(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.colors.label(class="form-label") }}
+            {{ form.colors(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.is_active.label(class="form-label") }}
+            {{ form.is_active() }}
+        </div>
+        <button type="submit" class="btn-primary" style="margin-top: 1.5rem;">Save</button>
+        <a href="{{ url_for('admin.products') }}" class="btn-outline" style="margin-top: 1.5rem; margin-left: 1rem;">Cancel</a>
+    </form>
+</div>
+{% endblock %} 

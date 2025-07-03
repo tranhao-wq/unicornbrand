@@ -2,6 +2,7 @@ from flask import Flask, render_template
 from config import Config
 from database import db, login_manager, migrate
 import os
+from flask_socketio import SocketIO
 
 def create_app():
     app = Flask(__name__)
@@ -13,6 +14,9 @@ def create_app():
     login_manager.login_view = 'auth.login'
     login_manager.login_message = 'Please log in to access this page.'
     migrate.init_app(app, db)
+
+    # SocketIO
+    socketio = SocketIO(app)
     
     # Register blueprints
     from routes.main import main_bp
@@ -51,10 +55,10 @@ def create_app():
     def size_guide():
         return render_template('size_guide.html')
 
-    return app
+    return app, socketio
 
 
 if __name__ == '__main__':
-    app = create_app()
+    app, socketio = create_app()
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    socketio.run(app, host='0.0.0.0', port=port)

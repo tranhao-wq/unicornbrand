@@ -6,6 +6,8 @@ from models.product import Product
 from models.order import Order
 from forms.product_forms import ProductForm
 from database import db
+from flask_socketio import SocketIO, emit
+from flask import current_app
 
 admin_bp = Blueprint('admin', __name__)
 
@@ -72,6 +74,10 @@ def add_product():
         )
         db.session.add(product)
         db.session.commit()
+        # Emit realtime event
+        socketio = current_app.extensions.get('socketio')
+        if socketio:
+            socketio.emit('product_update', {'action': 'add', 'product_id': product.id}, broadcast=True)
         flash('Product added successfully!', 'success')
         return redirect(url_for('admin.products'))
     
@@ -87,6 +93,10 @@ def edit_product(id):
     if form.validate_on_submit():
         form.populate_obj(product)
         db.session.commit()
+        # Emit realtime event
+        socketio = current_app.extensions.get('socketio')
+        if socketio:
+            socketio.emit('product_update', {'action': 'edit', 'product_id': product.id}, broadcast=True)
         flash('Product updated successfully!', 'success')
         return redirect(url_for('admin.products'))
     
@@ -99,6 +109,10 @@ def delete_product(id):
     product = Product.query.get_or_404(id)
     db.session.delete(product)
     db.session.commit()
+    # Emit realtime event
+    socketio = current_app.extensions.get('socketio')
+    if socketio:
+        socketio.emit('product_update', {'action': 'delete', 'product_id': id}, broadcast=True)
     flash('Product deleted successfully!', 'success')
     return redirect(url_for('admin.products'))
 

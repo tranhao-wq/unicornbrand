@@ -3,7 +3,7 @@ from datetime import timedelta
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'unicorn-secret-key-2024'
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///unicorn_brand.db'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'mysql+pymysql://root:root@localhost/unicorn'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     UPLOAD_FOLDER = 'static/images/products'
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16MB max file size
