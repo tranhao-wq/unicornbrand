@@ -5,7 +5,7 @@ from database import db
 
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     total_amount = db.Column(db.Float, nullable=False)
     status = db.Column(db.String(20), default='pending')  # pending, confirmed, shipped, delivered, cancelled
     shipping_address = db.Column(db.Text, nullable=False)
