@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from flask_login import login_required, current_user
 from models.product import Product
 from models.order import Order, OrderItem
+from models.cart_item import CartItem
 from database import db
 
 cart_bp = Blueprint('cart', __name__)
@@ -53,9 +54,27 @@ def add_to_cart():
 @cart_bp.route('/view')
 @login_required
 def view_cart():
-    cart_items = session.get('cart', [])
-    total = sum(item['price'] * item['quantity'] for item in cart_items)
-    return render_template('cart/view.html', cart_items=cart_items, total=total)
+    # Lấy cart từ DB (CartItem)
+    cart_items = CartItem.query.filter_by(user_id=current_user.id).all()
+    # Tạo list dict để render template
+    items = []
+    total = 0
+    for item in cart_items:
+        product = Product.query.get(item.product_id)
+        if not product:
+            continue
+        item_dict = {
+            'product_id': item.product_id,
+            'quantity': item.quantity,
+            'size': item.size,
+            'color': item.color,
+            'name': product.name,
+            'price': product.price,
+            'image_url': product.image_url
+        }
+        items.append(item_dict)
+        total += product.price * item.quantity
+    return render_template('cart/view.html', cart_items=items, total=total)
 
 @cart_bp.route('/update', methods=['POST'])
 @login_required
