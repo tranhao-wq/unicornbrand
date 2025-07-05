@@ -63,12 +63,18 @@ def products():
     
     # Sinh signed URL cho ảnh
     product_items = []
+    seen_ids = set()
     for p in products.items:
+        if p.id in seen_ids:
+            continue  # Bỏ qua sản phẩm trùng id
+        seen_ids.add(p.id)
         signed_url = None
         if p.image_url:
-            # image_url lưu tên file (unique_name)
-            res = supabase.storage.from_(SUPABASE_BUCKET).create_signed_url(p.image_url.split('/')[-1], 3600)
-            signed_url = SUPABASE_URL + res.get('signedURL') if res.get('signedURL') else None
+            try:
+                res = supabase.storage.from_(SUPABASE_BUCKET).create_signed_url(p.image_url.split('/')[-1], 3600)
+                signed_url = SUPABASE_URL + res.get('signedURL') if res.get('signedURL') else None
+            except Exception:
+                signed_url = None  # Nếu lỗi (file không tồn tại), dùng placeholder
         product_items.append({
             'id': p.id,
             'name': p.name,
