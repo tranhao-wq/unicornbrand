@@ -40,6 +40,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    syncCartToBackendIfNeeded();
+    if (window.isAuthenticated) {
+        updateCartCountFromBackend();
+    }
 });
 
 // Alert system
@@ -110,14 +115,29 @@ function initializeCart() {
     });
 }
 
-function addToCart(productId, quantity) {
-    let cart = JSON.parse(localStorage.getItem('cart')) || {};
-    if (cart[productId]) {
-        cart[productId] += quantity;
+function addToCart(productId, quantity, size, color) {
+    if (window.isAuthenticated) {
+        fetch('/api/cart/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ product_id: productId, quantity, size, color })
+        })
+        .then(res => res.json())
+        .then(data => {
+            updateCartCountFromBackend();
+            showToast('Added to cart!', 'success');
+        });
     } else {
-        cart[productId] = quantity;
+        let cart = JSON.parse(localStorage.getItem('cart')) || {};
+        if (cart[productId]) {
+            cart[productId] += quantity;
+        } else {
+            cart[productId] = quantity;
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartCount();
+        showToast('Added to cart!', 'success');
     }
-    localStorage.setItem('cart', JSON.stringify(cart));
 }
 
 function getCartItemCount() {
@@ -407,4 +427,36 @@ function removeToast(toast) {
             toast.parentNode.removeChild(toast);
         }
     }, 300);
+}
+
+// Đồng bộ cart localStorage lên backend khi đăng nhập
+function syncCartToBackendIfNeeded() {
+    if (window.isAuthenticated && localStorage.getItem('cart')) {
+        const cart = JSON.parse(localStorage.getItem('cart'));
+        // Chuyển đổi về dạng {product_id: {quantity, size, color}}
+        fetch('/api/cart/sync', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cart })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                localStorage.removeItem('cart');
+                updateCartCountFromBackend();
+            }
+        });
+    }
+}
+
+function updateCartCountFromBackend() {
+    fetch('/api/cart/count')
+        .then(res => res.json())
+        .then(data => {
+            const cartBadge = document.getElementById('cart-count');
+            if (cartBadge) {
+                cartBadge.textContent = data.cart_count;
+                cartBadge.style.display = data.cart_count > 0 ? 'inline' : 'none';
+            }
+        });
 }
