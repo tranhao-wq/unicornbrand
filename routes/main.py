@@ -89,8 +89,7 @@ def products():
             'is_in_stock': p.is_in_stock()
         })
     # Tạo đối tượng phân trang mới cho template
-    from flask_sqlalchemy import Pagination
-    class DummyPagination:
+    class DummyPagination(type(products)):
         def __init__(self, orig, items):
             self.__dict__.update(orig.__dict__)
             self.items = items
