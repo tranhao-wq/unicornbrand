@@ -85,7 +85,7 @@ def add_product():
         # Emit realtime event
         socketio = current_app.extensions.get('socketio')
         if socketio:
-            socketio.emit('product_update', {'action': 'add', 'product_id': product.id}, broadcast=True)
+            socketio.emit('product_update', {'action': 'add', 'product_id': product.id})
         flash('Product added successfully!', 'success')
         return redirect(url_for('admin.products'))
     return render_template('admin/product_form.html', form=form, title='Add Product', product=None)
@@ -108,7 +108,7 @@ def edit_product(id):
         # Emit realtime event
         socketio = current_app.extensions.get('socketio')
         if socketio:
-            socketio.emit('product_update', {'action': 'edit', 'product_id': product.id}, broadcast=True)
+            socketio.emit('product_update', {'action': 'edit', 'product_id': product.id})
         flash('Product updated successfully!', 'success')
         return redirect(url_for('admin.products'))
     return render_template('admin/product_form.html', form=form, title='Edit Product', product=product)
@@ -123,7 +123,7 @@ def delete_product(id):
     # Emit realtime event
     socketio = current_app.extensions.get('socketio')
     if socketio:
-        socketio.emit('product_update', {'action': 'delete', 'product_id': id}, broadcast=True)
+        socketio.emit('product_update', {'action': 'delete', 'product_id': id})
     flash('Product deleted successfully!', 'success')
     return redirect(url_for('admin.products'))
 
