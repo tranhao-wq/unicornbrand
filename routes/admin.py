@@ -37,7 +37,11 @@ def upload_image_to_supabase(file_storage):
     file_name = secure_filename(file_storage.filename)
     unique_name = f"{int(datetime.utcnow().timestamp())}_{file_name}"
     try:
-        supabase.storage.from_(SUPABASE_BUCKET).upload(unique_name, file_data)
+        supabase.storage.from_(SUPABASE_BUCKET).upload(
+            unique_name,
+            file_data,
+            {"content-type": file_storage.mimetype}
+        )
         return unique_name
     except Exception as e:
         logger.error(f"Error uploading image {file_name} to Supabase: {e}")
