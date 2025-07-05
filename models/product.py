@@ -3,13 +3,15 @@ from flask_sqlalchemy import SQLAlchemy
 
 from database import db
 
+DEFAULT_BRAND = 'UNICORN BRAND'
+
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
     price = db.Column(db.Float, nullable=False)
     category = db.Column(db.String(50), nullable=False)
-    brand = db.Column(db.String(50), default='UNICORN BRAND')
+    brand = db.Column(db.String(50), default=DEFAULT_BRAND)
     image_url = db.Column(db.String(200))
     stock_quantity = db.Column(db.Integer, default=0)
     sizes = db.Column(db.String(100))  # JSON string: "6,7,8,9,10,11,12"

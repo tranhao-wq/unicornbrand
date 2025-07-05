@@ -1,0 +1,65 @@
+GIAI ĐOẠN PHÁT TRIỂN UNICORN - TỔNG HỢP CÁC BƯỚC ĐÃ LÀM
+========================================================
+
+1. CRUD SẢN PHẨM & ADMIN UI
+--------------------------
+- Xây dựng trang admin với bảng sản phẩm, form thêm/sửa, nút xóa.
+- Kết nối CRUD backend với Supabase (Postgres).
+- Thêm link "Admin Dashboard" vào menu nếu là admin.
+
+2. KẾT NỐI SUPABASE & TỐI ƯU
+----------------------------
+- Sửa lỗi 500 do Supabase sleep/quá tải hoặc pool SQLAlchemy chưa tối ưu.
+- Tối ưu pool SQLAlchemy, kiểm tra lại DATABASE_URL, thêm sslmode=require.
+
+3. MẬT KHẨU ADMIN & XÁC THỰC
+----------------------------
+- Tạo hash mật khẩu mới cho admin, cập nhật vào Supabase.
+- Đăng nhập lại với mật khẩu mới.
+
+4. CRUD SẢN PHẨM & UPLOAD ẢNH
+-----------------------------
+- Sửa lỗi sản phẩm bị lặp, ảnh không hiển thị do Render không cho ghi file tĩnh.
+- Triển khai upload ảnh lên Supabase Storage (bucket private, 10MB, chỉ cho phép ảnh).
+- Lưu tên file vào DB, sinh signed URL khi render sản phẩm.
+- Sửa requirements.txt, code không lặp sản phẩm, không lỗi khi file ảnh không tồn tại.
+
+5. SỬA LỖI TEMPLATE & KẾT NỐI
+----------------------------
+- Sửa lỗi TypeError do gọi hàm trên thuộc tính đã là chuỗi hoặc bool (product.formatted_price, product.is_in_stock).
+- Sửa template, bỏ dấu ngoặc khi dùng thuộc tính là giá trị.
+- Lỗi kết nối database vẫn xuất hiện do Supabase free bị sleep/quá tải hoặc mạng không ổn định.
+
+6. DASHBOARD ADMIN & TRỰC QUAN HÓA
+----------------------------------
+- Xây dựng dashboard admin với các bảng Chart.js: doanh thu theo tháng, user mới, tỉ lệ đơn hàng, top sản phẩm bán chạy, tỉ lệ sản phẩm theo danh mục.
+- Truyền dữ liệu từ backend sang template, hiển thị trực quan hóa ở đầu dashboard.
+
+7. TỐI ƯU LƯU DASHBOARD STATS VÀO DB
+------------------------------------
+- Tạo model DashboardStats, lưu số liệu tổng hợp (stat cards, dữ liệu biểu đồ) dạng JSON.
+- Sau mỗi CRUD lớn (product, order, user), tự động gọi hàm update_dashboard_stats để tổng hợp lại và lưu vào DB.
+- Dashboard lấy dữ liệu từ bảng này, tối ưu hiệu năng, có thể thêm nút "Làm mới".
+
+8. MIGRATE DATABASE & XỬ LÝ LỖI
+-------------------------------
+- Set biến môi trường DATABASE_URL, SUPABASE_URL, SUPABASE_KEY khi migrate.
+- Refactor code để khởi tạo supabase client trong function, tránh lỗi khi migrate.
+- Migrate và upgrade thành công, tạo bảng dashboard_stats trong Supabase.
+
+9. REPUSH CODE & KIỂM TRA
+-------------------------
+- Repush toàn bộ thay đổi lên repository.
+- Xác nhận dashboard, CRUD, và các chức năng khác hoạt động, chỉ thỉnh thoảng bị timeout do tài nguyên server hoặc kết nối Supabase.
+
+10. GIỎ HÀNG (CART) & CẬP NHẬT ICON
+-----------------------------------
+- Kiểm tra logic cập nhật icon giỏ hàng, xác nhận hiện tại chỉ dùng localStorage, chưa đồng bộ backend.
+- Sửa JS để icon giỏ hàng cập nhật ngay lập tức khi add to cart (không cần reload), lưu vào localStorage.
+- Giải thích khi nào nên đồng bộ backend, khi nào chỉ cần localStorage.
+- Chọn giải pháp localStorage cho MVP/web nhỏ.
+
+KẾT LUẬN
+--------
+- Đã hoàn thiện CRUD sản phẩm, upload ảnh Supabase, dashboard trực quan hóa, tối ưu pool, lưu dashboard stats vào DB, migrate thành công, repush code, và tối ưu trải nghiệm giỏ hàng với localStorage.
+- Đã giải thích rõ các lựa chọn đồng bộ giỏ hàng, hướng dẫn chi tiết từng bước xử lý lỗi, tối ưu, và phát triển tính năng mới. 

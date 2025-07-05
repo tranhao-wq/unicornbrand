@@ -69,23 +69,16 @@ function initializeAlerts() {
 
 // Cart functionality
 function initializeCart() {
-    // Update cart count in navbar
     updateCartCount();
-    
-    // Add to cart buttons
     const addToCartBtns = document.querySelectorAll('.add-to-cart-btn');
     addToCartBtns.forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.preventDefault();
-            const form = this.closest('form');
-            if (form) {
-                // Add loading state
-                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
-                this.disabled = true;
-                
-                // Submit form
-                form.submit();
-            }
+            const productId = this.dataset.productId;
+            const quantity = this.closest('form')?.querySelector('.quantity-input')?.value || 1;
+            addToCart(productId, parseInt(quantity));
+            updateCartCount();
+            showToast('Added to cart!', 'success');
         });
     });
     
@@ -115,6 +108,25 @@ function initializeCart() {
             });
         }
     });
+}
+
+function addToCart(productId, quantity) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || {};
+    if (cart[productId]) {
+        cart[productId] += quantity;
+    } else {
+        cart[productId] = quantity;
+    }
+    localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+function getCartItemCount() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || {};
+    let count = 0;
+    for (let key in cart) {
+        count += cart[key];
+    }
+    return count;
 }
 
 // Product filters
@@ -306,19 +318,12 @@ function clearFieldError(field) {
 
 // Update cart count in navbar
 function updateCartCount() {
-    // This would typically fetch from server or local storage
     const cartCount = getCartItemCount();
     const cartBadge = document.getElementById('cart-count');
     if (cartBadge) {
         cartBadge.textContent = cartCount;
         cartBadge.style.display = cartCount > 0 ? 'inline' : 'none';
     }
-}
-
-// Get cart item count (placeholder - would integrate with backend)
-function getCartItemCount() {
-    // This is a placeholder - in a real app, this would fetch from session/API
-    return 0;
 }
 
 // Smooth scrolling for anchor links

@@ -3,11 +3,18 @@ from flask_sqlalchemy import SQLAlchemy
 
 from database import db
 
+# Order Status Constants
+ORDER_STATUS_PENDING = 'pending'
+ORDER_STATUS_CONFIRMED = 'confirmed'
+ORDER_STATUS_SHIPPED = 'shipped'
+ORDER_STATUS_DELIVERED = 'delivered'
+ORDER_STATUS_CANCELLED = 'cancelled'
+
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     total_amount = db.Column(db.Float, nullable=False)
-    status = db.Column(db.String(20), default='pending')  # pending, confirmed, shipped, delivered, cancelled
+    status = db.Column(db.String(20), default=ORDER_STATUS_PENDING)
     shipping_address = db.Column(db.Text, nullable=False)
     phone = db.Column(db.String(20))
     notes = db.Column(db.Text)
@@ -19,11 +26,11 @@ class Order(db.Model):
     
     def get_status_badge_class(self):
         status_classes = {
-            'pending': 'bg-yellow-100 text-yellow-800',
-            'confirmed': 'bg-blue-100 text-blue-800',
-            'shipped': 'bg-purple-100 text-purple-800',
-            'delivered': 'bg-green-100 text-green-800',
-            'cancelled': 'bg-red-100 text-red-800'
+            ORDER_STATUS_PENDING: 'bg-yellow-100 text-yellow-800',
+            ORDER_STATUS_CONFIRMED: 'bg-blue-100 text-blue-800',
+            ORDER_STATUS_SHIPPED: 'bg-purple-100 text-purple-800',
+            ORDER_STATUS_DELIVERED: 'bg-green-100 text-green-800',
+            ORDER_STATUS_CANCELLED: 'bg-red-100 text-red-800'
         }
         return status_classes.get(self.status, 'bg-gray-100 text-gray-800')
     

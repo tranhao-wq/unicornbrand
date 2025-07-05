@@ -1,27 +1,54 @@
 from flask import Blueprint, render_template, request, jsonify
 from models.product import Product
-from forms.product_forms import SearchForm
+from forms.product_forms import SearchForm, PRODUCT_CATEGORIES
 from sqlalchemy import or_
-from supabase import create_client, Client
 import os
+import logging
 
 main_bp = Blueprint('main', __name__)
 
 SUPABASE_URL = os.environ.get('SUPABASE_URL')
 SUPABASE_KEY = os.environ.get('SUPABASE_KEY')
-supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 SUPABASE_BUCKET = 'product-images'
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+def get_supabase_client():
+    """Initializes and returns a Supabase client."""
+    if not SUPABASE_URL or not SUPABASE_KEY:
+        logger.error("Supabase URL or Key not configured.")
+        return None
+    try:
+        from supabase import create_client, Client
+        return create_client(SUPABASE_URL, SUPABASE_KEY)
+    except Exception as e:
+        logger.error(f"Error initializing Supabase client: {e}")
+        return None
+
+def get_signed_image_url(supabase_client, image_path):
+    """Generates a signed URL for a given image path from Supabase storage."""
+    if not supabase_client or not image_path:
+        return None
+    try:
+        res = supabase_client.storage.from_(SUPABASE_BUCKET).create_signed_url(image_path, 3600)
+        return SUPABASE_URL + res.get('signedURL') if res.get('signedURL') else None
+    except Exception as e:
+        logger.error(f"Error generating signed URL for {image_path}: {e}")
+        return None
 
 @main_bp.route('/')
 def index():
+    supabase = get_supabase_client()
     # Get featured products (latest 8 products)
     featured_products = Product.query.filter_by(is_active=True).order_by(Product.created_at.desc()).limit(8).all()
     
     # Get products by category for showcase
-    categories = ['sneakers', 'boots', 'formal', 'sports']
     category_products = {}
-    for category in categories:
-        category_products[category] = Product.query.filter_by(category=category, is_active=True).limit(4).all()
+    for category_tuple in PRODUCT_CATEGORIES:
+        category_slug = category_tuple[0]
+        category_products[category_slug] = Product.query.filter_by(category=category_slug, is_active=True).limit(4).all()
     
     return render_template('index.html', 
                          featured_products=featured_products,
@@ -29,6 +56,7 @@ def index():
 
 @main_bp.route('/products')
 def products():
+    supabase = get_supabase_client()
     form = SearchForm()
     page = request.args.get('page', 1, type=int)
     per_page = 12
@@ -68,13 +96,7 @@ def products():
         if p.id in seen_ids:
             continue  # Bỏ qua sản phẩm trùng id
         seen_ids.add(p.id)
-        signed_url = None
-        if p.image_url:
-            try:
-                res = supabase.storage.from_(SUPABASE_BUCKET).create_signed_url(p.image_url.split('/')[-1], 3600)
-                signed_url = SUPABASE_URL + res.get('signedURL') if res.get('signedURL') else None
-            except Exception:
-                signed_url = None  # Nếu lỗi (file không tồn tại), dùng placeholder
+        signed_url = get_signed_image_url(supabase, p.image_url) if p.image_url else None
         product_items.append({
             'id': p.id,
             'name': p.name,
@@ -102,13 +124,24 @@ def products():
 
 @main_bp.route('/product/<int:id>')
 def product_detail(id):
+    supabase = get_supabase_client()
     product = Product.query.get_or_404(id)
+    
+    # Get signed URL for the product image
+    if product.image_url:
+        product.image_url = get_signed_image_url(supabase, product.image_url)
+
     related_products = Product.query.filter(
         Product.category == product.category,
         Product.id != product.id,
         Product.is_active == True
     ).limit(4).all()
     
+    # Get signed URLs for related products
+    for p in related_products:
+        if p.image_url:
+            p.image_url = get_signed_image_url(supabase, p.image_url)
+
     return render_template('product_detail.html', 
                          product=product,
                          related_products=related_products)
