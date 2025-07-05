@@ -74,15 +74,23 @@ function initializeAlerts() {
 
 // Cart functionality
 function initializeCart() {
-    updateCartCount();
+    if (window.isAuthenticated) {
+        updateCartCountFromBackend();
+    } else {
+        updateCartCount();
+    }
     const addToCartBtns = document.querySelectorAll('.add-to-cart-btn');
     addToCartBtns.forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.preventDefault();
-            const productId = this.dataset.productId;
-            const quantity = this.closest('form')?.querySelector('.quantity-input')?.value || 1;
-            addToCart(productId, parseInt(quantity));
-            updateCartCount();
+            const form = this.closest('form');
+            const productId = form.querySelector('input[name="product_id"]').value;
+            const quantity = parseInt(form.querySelector('.quantity-input')?.value || 1);
+            const size = form.querySelector('select[name="size"]')?.value;
+            const color = form.querySelector('select[name="color"]')?.value;
+            
+            addToCart(productId, quantity, size, color);
+            // updateCartCount() is called inside addToCart based on authentication status
             showToast('Added to cart!', 'success');
         });
     });
