@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container" style="padding: 2rem 0; max-width: 600px;">
     <h1 style="font-size: 2rem; font-weight: 700; color: #1f2937; margin-bottom: 2rem;">{{ title }}</h1>
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         <div class="form-group">
             {{ form.name.label(class="form-label") }}
@@ -26,8 +26,13 @@
             {{ form.brand(class="form-control") }}
         </div>
         <div class="form-group">
-            {{ form.image_url.label(class="form-label") }}
-            {{ form.image_url(class="form-control") }}
+            {{ form.image.label(class="form-label") }}
+            {{ form.image(class="form-control") }}
+            {% if form.image.data or (form.image.object_data and form.image.object_data.filename) or (product and product.image_url) %}
+                <div style="margin-top: 0.5rem;">
+                    <img src="{{ url_for('static', filename='images/products/' ~ (product.image_url if product else '') ) }}" alt="Current Image" style="max-width: 200px; max-height: 200px;">
+                </div>
+            {% endif %}
         </div>
         <div class="form-group">
             {{ form.stock_quantity.label(class="form-label") }}

@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, FloatField, IntegerField, SelectField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, NumberRange, Length
+from flask_wtf.file import FileField, FileAllowed
 
 class ProductForm(FlaskForm):
     name = StringField('Product Name', validators=[DataRequired(), Length(max=100)])
@@ -15,7 +16,7 @@ class ProductForm(FlaskForm):
         ('casual', 'Casual Shoes')
     ], validators=[DataRequired()])
     brand = StringField('Brand', default='UNICORN BRAND')
-    image_url = StringField('Image URL')
+    image = FileField('Product Image', validators=[FileAllowed(['jpg', 'jpeg', 'png'], 'Images only!')])
     stock_quantity = IntegerField('Stock Quantity', validators=[DataRequired(), NumberRange(min=0)])
     sizes = StringField('Available Sizes (comma-separated)', 
                        validators=[DataRequired()],

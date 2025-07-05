@@ -8,6 +8,8 @@ from forms.product_forms import ProductForm
 from database import db
 from flask_socketio import SocketIO, emit
 from flask import current_app
+from werkzeug.utils import secure_filename
+import os
 
 admin_bp = Blueprint('admin', __name__)
 
@@ -60,13 +62,19 @@ def products():
 def add_product():
     form = ProductForm()
     if form.validate_on_submit():
+        filename = None
+        if form.image.data:
+            filename = secure_filename(form.image.data.filename)
+            upload_folder = os.path.join('static', 'images', 'products')
+            os.makedirs(upload_folder, exist_ok=True)
+            form.image.data.save(os.path.join(upload_folder, filename))
         product = Product(
             name=form.name.data,
             description=form.description.data,
             price=form.price.data,
             category=form.category.data,
             brand=form.brand.data,
-            image_url=form.image_url.data,
+            image_url=filename,
             stock_quantity=form.stock_quantity.data,
             sizes=form.sizes.data,
             colors=form.colors.data,
@@ -80,8 +88,7 @@ def add_product():
             socketio.emit('product_update', {'action': 'add', 'product_id': product.id}, broadcast=True)
         flash('Product added successfully!', 'success')
         return redirect(url_for('admin.products'))
-    
-    return render_template('admin/product_form.html', form=form, title='Add Product')
+    return render_template('admin/product_form.html', form=form, title='Add Product', product=None)
 
 @admin_bp.route('/products/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -89,8 +96,13 @@ def add_product():
 def edit_product(id):
     product = Product.query.get_or_404(id)
     form = ProductForm(obj=product)
-    
     if form.validate_on_submit():
+        if form.image.data:
+            filename = secure_filename(form.image.data.filename)
+            upload_folder = os.path.join('static', 'images', 'products')
+            os.makedirs(upload_folder, exist_ok=True)
+            form.image.data.save(os.path.join(upload_folder, filename))
+            product.image_url = filename
         form.populate_obj(product)
         db.session.commit()
         # Emit realtime event
@@ -99,8 +111,7 @@ def edit_product(id):
             socketio.emit('product_update', {'action': 'edit', 'product_id': product.id}, broadcast=True)
         flash('Product updated successfully!', 'success')
         return redirect(url_for('admin.products'))
-    
-    return render_template('admin/product_form.html', form=form, title='Edit Product')
+    return render_template('admin/product_form.html', form=form, title='Edit Product', product=product)
 
 @admin_bp.route('/products/delete/<int:id>')
 @login_required
