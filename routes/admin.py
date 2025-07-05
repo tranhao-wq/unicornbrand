@@ -37,7 +37,7 @@ def upload_image_to_supabase(file_storage):
     file_name = secure_filename(file_storage.filename)
     unique_name = f"{int(datetime.utcnow().timestamp())}_{file_name}"
     try:
-        supabase.storage.from_(SUPABASE_BUCKET).upload(unique_name, io.BytesIO(file_data))
+        supabase.storage.from_(SUPABASE_BUCKET).upload(unique_name, file_data)
         return unique_name
     except Exception as e:
         logger.error(f"Error uploading image {file_name} to Supabase: {e}")
@@ -117,20 +117,28 @@ def add_product():
         image_url = None
         if form.image.data:
             image_url = upload_image_to_supabase(form.image.data)
-        product = Product(
-            name=form.name.data,
-            description=form.description.data,
-            price=form.price.data,
-            category=form.category.data,
-            brand=form.brand.data,
-            image_url=image_url,
-            stock_quantity=form.stock_quantity.data,
-            sizes=form.sizes.data,
-            colors=form.colors.data,
-            is_active=form.is_active.data
-        )
-        db.session.add(product)
-        db.session.commit()
+            if form.image.data and not image_url:
+                flash('Image upload failed!', 'error')
+                return redirect(url_for('admin.products'))
+        try:
+            product = Product(
+                name=form.name.data,
+                description=form.description.data,
+                price=form.price.data,
+                category=form.category.data,
+                brand=form.brand.data,
+                image_url=image_url,
+                stock_quantity=form.stock_quantity.data,
+                sizes=form.sizes.data,
+                colors=form.colors.data,
+                is_active=form.is_active.data
+            )
+            db.session.add(product)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            flash('Error saving product: ' + str(e), 'error')
+            return redirect(url_for('admin.products'))
         socketio = current_app.extensions.get('socketio')
         if socketio:
             socketio.emit('product_update', {'action': 'add', 'product_id': product.id})
@@ -148,9 +156,17 @@ def edit_product(id):
     if form.validate_on_submit():
         if form.image.data:
             image_url = upload_image_to_supabase(form.image.data)
+            if not image_url:
+                flash('Image upload failed!', 'error')
+                return redirect(url_for('admin.products'))
             product.image_url = image_url
-        form.populate_obj(product)
-        db.session.commit()
+        try:
+            form.populate_obj(product)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            flash('Error updating product: ' + str(e), 'error')
+            return redirect(url_for('admin.products'))
         socketio = current_app.extensions.get('socketio')
         if socketio:
             socketio.emit('product_update', {'action': 'edit', 'product_id': product.id})
