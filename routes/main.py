@@ -2,8 +2,15 @@ from flask import Blueprint, render_template, request, jsonify
 from models.product import Product
 from forms.product_forms import SearchForm
 from sqlalchemy import or_
+from supabase import create_client, Client
+import os
 
 main_bp = Blueprint('main', __name__)
+
+SUPABASE_URL = os.environ.get('SUPABASE_URL')
+SUPABASE_KEY = os.environ.get('SUPABASE_KEY')
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+SUPABASE_BUCKET = 'product-images'
 
 @main_bp.route('/')
 def index():
@@ -54,8 +61,36 @@ def products():
         page=page, per_page=per_page, error_out=False
     )
     
+    # Sinh signed URL cho ảnh
+    product_items = []
+    for p in products.items:
+        signed_url = None
+        if p.image_url:
+            # image_url lưu tên file (unique_name)
+            res = supabase.storage.from_(SUPABASE_BUCKET).create_signed_url(p.image_url.split('/')[-1], 3600)
+            signed_url = SUPABASE_URL + res.get('signedURL') if res.get('signedURL') else None
+        product_items.append({
+            'id': p.id,
+            'name': p.name,
+            'category': p.category,
+            'description': p.description,
+            'brand': p.brand,
+            'image_url': signed_url,
+            'stock_quantity': p.stock_quantity,
+            'is_active': p.is_active,
+            'price': p.price,
+            'formatted_price': p.formatted_price(),
+            'is_in_stock': p.is_in_stock()
+        })
+    # Tạo đối tượng phân trang mới cho template
+    from flask_sqlalchemy import Pagination
+    class DummyPagination:
+        def __init__(self, orig, items):
+            self.__dict__.update(orig.__dict__)
+            self.items = items
+    products_for_template = DummyPagination(products, product_items)
     return render_template('products.html', 
-                         products=products, 
+                         products=products_for_template, 
                          form=form,
                          search_query=search_query,
                          category=category)
