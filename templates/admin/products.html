@@ -28,7 +28,7 @@
                 <td>{% if product.is_active %}<span class="badge badge-success">Active</span>{% else %}<span class="badge badge-danger">Inactive</span>{% endif %}</td>
                 <td>
                     {% if product.image_url %}
-                        <img src="{{ product.image_url }}" alt="{{ product.name }}" style="max-width: 60px; max-height: 60px; border-radius: 6px; border: 1px solid #eee; background: #fff;" />
+                        <img src="https://pxtblclqlijiimucglrm.supabase.co/storage/v1/object/public/product-images/{{ product.image_url }}" alt="{{ product.name }}" style="max-width: 60px; max-height: 60px; border-radius: 6px; border: 1px solid #eee; background: #fff;" />
                     {% else %}
                         <span style="color: #bbb;">No image</span>
                     {% endif %}
