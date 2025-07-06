@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, current_app
 from flask_login import login_required, current_user
 from models import db, Product, CartItem  # CartItem sẽ tạo nếu chưa có
 
@@ -73,7 +73,7 @@ def sync_cart_api():
     # Thêm lại từ localStorage
     for product_id, item in cart.items():
         if not isinstance(item, dict):
-            app.logger.warning(f"Invalid cart item: {item}")
+            current_app.logger.warning(f"Invalid cart item: {item}")
             continue
         quantity = int(item.get('quantity', 1))
         size = item.get('size')
