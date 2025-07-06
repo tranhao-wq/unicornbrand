@@ -56,7 +56,7 @@
                         <span class="product-category">{{ product.category.title() }}</span>
                         <h3 class="product-title">{{ product.name }}</h3>
                         <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 1rem;">{{ product.description[:100] }}...</p>
-                        <p class="product-price">{{ product.formatted_price }}</p>
+                        <p class="product-price">{{ product.formatted_price() }}</p>
                         <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 1rem;">
                             {% if product.is_in_stock %}
                                 <span class="badge badge-green">In Stock ({{ product.stock_quantity }})</span>

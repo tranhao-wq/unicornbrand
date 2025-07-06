@@ -44,7 +44,7 @@ def add_to_cart():
             'color': color,
             'name': product.name,
             'price': product.price,
-            'image_url': product.image_url
+            'image_url': product.get_image_url()
         })
     
     session.modified = True
@@ -70,7 +70,7 @@ def view_cart():
             'color': item.color,
             'name': product.name,
             'price': product.price,
-            'image_url': product.image_url
+            'image_url': product.get_image_url()
         }
         items.append(item_dict)
         total += product.price * item.quantity
