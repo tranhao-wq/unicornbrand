@@ -47,7 +47,11 @@
         <div class="grid grid-cols-3" style="margin-bottom: 3rem;">
             {% for product in products.items %}
                 <div class="card product-card">
-                    <img src="{{ product.image_url or '/static/images/placeholder-shoe.jpg' }}" alt="{{ product.name }}">
+                    {% if product.image_url and product.image_url.startswith('http') %}
+                        <img src="{{ product.image_url }}" alt="{{ product.name }}">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='images/placeholder-shoe.jpg') }}" alt="{{ product.name }}">
+                    {% endif %}
                     <div class="product-info">
                         <span class="product-category">{{ product.category.title() }}</span>
                         <h3 class="product-title">{{ product.name }}</h3>

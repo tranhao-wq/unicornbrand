@@ -7,7 +7,7 @@
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-bottom: 3rem;">
         <!-- Product Images -->
         <div>
-            <img id="main-product-image" src="https://pxtblclqlijiimucglrm.supabase.co/storage/v1/object/public/product-images/{{ product.image_url or 'placeholder-shoe.jpg' }}" alt="{{ product.name }}" style="width: 100%; border-radius: 1rem; margin-bottom: 1rem;">
+            <img id="main-product-image" src="{{ product.image_url or url_for('static', filename='images/placeholder-shoe.jpg') }}" alt="{{ product.name }}" style="width: 100%; border-radius: 1rem; margin-bottom: 1rem;">
         </div>
         
         <!-- Product Info -->
@@ -93,7 +93,7 @@
             <div class="grid grid-cols-4">
                 {% for product in related_products %}
                     <div class="card product-card">
-                        <img src="https://pxtblclqlijiimucglrm.supabase.co/storage/v1/object/public/product-images/{{ product.image_url or 'placeholder-shoe.jpg' }}" alt="{{ product.name }}">
+                        <img src="{{ product.image_url or url_for('static', filename='images/placeholder-shoe.jpg') }}" alt="{{ product.name }}">
                         <div class="product-info">
                             <span class="product-category">{{ product.category.title() }}</span>
                             <h3 class="product-title">{{ product.name }}</h3>
