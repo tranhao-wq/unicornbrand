@@ -45,7 +45,6 @@ def get_signed_image_url(supabase_client, image_path):
 
 @main_bp.route('/')
 def index():
-    supabase = get_supabase_client()
     # Get featured products (latest 8 products)
     featured_products = Product.query.filter_by(is_active=True).order_by(Product.created_at.desc()).limit(8).all()
     
@@ -61,7 +60,6 @@ def index():
 
 @main_bp.route('/products')
 def products():
-    supabase = get_supabase_client()
     form = SearchForm()
     page = request.args.get('page', 1, type=int)
     per_page = 12
@@ -94,59 +92,22 @@ def products():
         page=page, per_page=per_page, error_out=False
     )
     
-    # Sinh signed URL cho ảnh
-    product_items = []
-    seen_ids = set()
-    for p in products.items:
-        if p.id in seen_ids:
-            continue  # Bỏ qua sản phẩm trùng id
-        seen_ids.add(p.id)
-        signed_url = get_signed_image_url(supabase, p.image_url) if p.image_url else None
-        product_items.append({
-            'id': p.id,
-            'name': p.name,
-            'category': p.category,
-            'description': p.description,
-            'brand': p.brand,
-            'image_url': signed_url,
-            'stock_quantity': p.stock_quantity,
-            'is_active': p.is_active,
-            'price': p.price,
-            'formatted_price': p.formatted_price(),
-            'is_in_stock': p.is_in_stock()
-        })
-    # Tạo đối tượng phân trang mới cho template
-    class DummyPagination(type(products)):
-        def __init__(self, orig, items):
-            self.__dict__.update(orig.__dict__)
-            self.items = items
-    products_for_template = DummyPagination(products, product_items)
+
     return render_template('products.html', 
-                         products=products_for_template, 
+                         products=products, 
                          form=form,
                          search_query=search_query,
                          category=category)
 
 @main_bp.route('/product/<int:id>')
 def product_detail(id):
-    supabase = get_supabase_client()
     product = Product.query.get_or_404(id)
-    
-    # Get signed URL for the product image
-    if product.image_url:
-        product.image_url = get_signed_image_url(supabase, product.image_url)
-
     related_products = Product.query.filter(
         Product.category == product.category,
         Product.id != product.id,
         Product.is_active == True
     ).limit(4).all()
     
-    # Get signed URLs for related products
-    for p in related_products:
-        if p.image_url:
-            p.image_url = get_signed_image_url(supabase, p.image_url)
-
     return render_template('product_detail.html', 
                          product=product,
                          related_products=related_products)

@@ -1,10 +1,13 @@
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from flask import current_app
+import os
+import logging
 
 from database import db
 
 DEFAULT_BRAND = 'UNICORN BRAND'
+logger = logging.getLogger(__name__)
 
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -41,7 +44,12 @@ class Product(db.Model):
             return None
         if self.image_url.startswith('http'):
             return self.image_url
-        return current_app.config.get('SUPABASE_URL', '') + self.image_url
+        
+        # Return public URL from Supabase storage
+        supabase_url = current_app.config.get('SUPABASE_URL')
+        if supabase_url:
+            return f"{supabase_url}/storage/v1/object/public/product-images/{self.image_url}"
+        return None
     
     def __repr__(self):
         return f'<Product {self.name}>'

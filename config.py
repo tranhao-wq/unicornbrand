@@ -11,6 +11,7 @@ class Config:
     
     # Supabase configuration
     SUPABASE_URL = os.environ.get('SUPABASE_URL', '')
+    SUPABASE_KEY = os.environ.get('SUPABASE_KEY', '')
     
     # Email configuration (for future use)
     MAIL_SERVER = os.environ.get('MAIL_SERVER')
