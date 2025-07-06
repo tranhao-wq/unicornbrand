@@ -3,10 +3,19 @@ from config import Config
 from database import db, login_manager, migrate
 import os
 from flask_socketio import SocketIO
+from flask_compress import Compress
+from flask_caching import Cache
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
+    
+    # Bandwidth optimization
+    Compress(app)  # Gzip compression - reduces response size by 70%
+    cache = Cache(app, config={'CACHE_TYPE': 'simple'})
+    
+    # Static files caching
+    app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 31536000  # 1 year
     
     # Initialize extensions
     db.init_app(app)

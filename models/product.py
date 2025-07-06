@@ -45,10 +45,29 @@ class Product(db.Model):
         if self.image_url.startswith('http'):
             return self.image_url
         
+        # Cache image URL to reduce repeated requests
+        from flask import current_app
+        try:
+            cache = current_app.extensions.get('cache')
+            if cache:
+                cache_key = f"img_url_{self.id}_{self.image_url}"
+                cached_url = cache.get(cache_key)
+                if cached_url:
+                    return cached_url
+        except:
+            pass
+        
         # Return public URL from Supabase storage
         supabase_url = current_app.config.get('SUPABASE_URL')
         if supabase_url:
-            return f"{supabase_url}/storage/v1/object/public/product-images/{self.image_url}"
+            url = f"{supabase_url}/storage/v1/object/public/product-images/{self.image_url}"
+            # Cache for 1 hour
+            try:
+                if cache:
+                    cache.set(cache_key, url, timeout=3600)
+            except:
+                pass
+            return url
         return None
     
     def __repr__(self):
