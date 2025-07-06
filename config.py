@@ -9,6 +9,9 @@ class Config:
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16MB max file size
     PERMANENT_SESSION_LIFETIME = timedelta(days=7)
     
+    # Supabase configuration
+    SUPABASE_URL = os.environ.get('SUPABASE_URL', '')
+    
     # Email configuration (for future use)
     MAIL_SERVER = os.environ.get('MAIL_SERVER')
     MAIL_PORT = int(os.environ.get('MAIL_PORT') or 587)

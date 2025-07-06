@@ -72,6 +72,9 @@ def sync_cart_api():
     CartItem.query.filter_by(user_id=current_user.id).delete()
     # Thêm lại từ localStorage
     for product_id, item in cart.items():
+        if not isinstance(item, dict):
+            app.logger.warning(f"Invalid cart item: {item}")
+            continue
         quantity = int(item.get('quantity', 1))
         size = item.get('size')
         color = item.get('color')

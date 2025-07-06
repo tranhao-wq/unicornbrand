@@ -1,5 +1,6 @@
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
+from flask import current_app
 
 from database import db
 
@@ -34,6 +35,13 @@ class Product(db.Model):
     
     def formatted_price(self):
         return f"${self.price:.2f}"
+    
+    def get_image_url(self):
+        if not self.image_url:
+            return None
+        if self.image_url.startswith('http'):
+            return self.image_url
+        return current_app.config.get('SUPABASE_URL', '') + self.image_url
     
     def __repr__(self):
         return f'<Product {self.name}>'

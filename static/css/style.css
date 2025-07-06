@@ -444,6 +444,37 @@ body:not(.admin-page) {
     color: white;
 }
 
+/* Footer custom centering and width */
+.footer .container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+.footer .grid-cols-4 {
+  justify-content: center;
+  gap: 2.5rem;
+}
+@media (max-width: 900px) {
+  .footer .grid-cols-4 {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+}
+@media (max-width: 600px) {
+  .footer .grid-cols-4 {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .footer .container {
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+  .footer .grid-cols-4 > div {
+    text-align: center;
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .hero h1 {
