@@ -33,7 +33,12 @@ def get_signed_image_url(supabase_client, image_path):
         return None
     try:
         res = supabase_client.storage.from_(SUPABASE_BUCKET).create_signed_url(image_path, 3600)
-        return SUPABASE_URL + res.get('signedURL') if res.get('signedURL') else None
+        signed_url = res.get('signedURL')
+        if not signed_url:
+            return None
+        if signed_url.startswith('http'):
+            return signed_url
+        return SUPABASE_URL + signed_url
     except Exception as e:
         logger.error(f"Error generating signed URL for {image_path}: {e}")
         return None
