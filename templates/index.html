@@ -45,7 +45,7 @@
             <div class="product-grid-modern" style="margin-bottom: 3rem;">
                 {% for product in featured_products %}
                     <div class="product-card-modern">
-                        <img class="product-image" src="{{ product.get_image_url() or url_for('static', filename='images/placeholder-shoe.jpg') }}" alt="{{ product.name }}">
+                        <img class="product-image" src="{{ product.image_url or url_for('static', filename='images/placeholder-shoe.jpg') }}" alt="{{ product.name }}">
                         <div class="product-name">{{ product.name }}</div>
                         <div class="product-price">{{ product.formatted_price() }}</div>
                         <a href="{{ url_for('main.product_detail', id=product.id) }}" class="see-more-btn">See More</a>

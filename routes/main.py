@@ -113,8 +113,7 @@ def products():
             'is_active': p.is_active,
             'price': p.price,
             'formatted_price': p.formatted_price(),
-            'is_in_stock': p.is_in_stock(),
-            'get_image_url': lambda: signed_url
+            'is_in_stock': p.is_in_stock()
         })
     # Tạo đối tượng phân trang mới cho template
     class DummyPagination(type(products)):
