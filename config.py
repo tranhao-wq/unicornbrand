@@ -1,5 +1,6 @@
 import os
 from datetime import timedelta
+from sqlalchemy.pool import NullPool
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'unicorn-secret-key-2024'
@@ -22,8 +23,5 @@ class Config:
 
     # SQLAlchemy pool optimization for Supabase
     SQLALCHEMY_ENGINE_OPTIONS = {
-        "pool_size": 10,
-        "max_overflow": 5,
-        "pool_timeout": 30,
-        "pool_recycle": 1800,
+        "poolclass": NullPool
     }
