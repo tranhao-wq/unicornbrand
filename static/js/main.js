@@ -123,6 +123,19 @@ function initializeCart() {
     });
 }
 
+// Thêm hàm lấy giỏ hàng từ backend (dùng cho trang view cart)
+function getCartFromBackend(callback) {
+    fetch('/api/cart')
+        .then(res => res.json())
+        .then(data => {
+            if (data.cart) {
+                callback(data.cart);
+            } else {
+                callback([]);
+            }
+        });
+}
+
 function addToCart(productId, quantity, size, color) {
     if (window.isAuthenticated) {
         fetch('/api/cart/add', {
@@ -137,10 +150,12 @@ function addToCart(productId, quantity, size, color) {
         });
     } else {
         let cart = JSON.parse(localStorage.getItem('cart')) || {};
-        if (cart[productId]) {
-            cart[productId] += quantity;
+        // Lưu thêm size, color nếu có
+        const key = `${productId}_${size || ''}_${color || ''}`;
+        if (cart[key]) {
+            cart[key].quantity += quantity;
         } else {
-            cart[productId] = quantity;
+            cart[key] = { quantity, size, color };
         }
         localStorage.setItem('cart', JSON.stringify(cart));
         updateCartCount();
@@ -441,7 +456,7 @@ function removeToast(toast) {
 function syncCartToBackendIfNeeded() {
     if (window.isAuthenticated && localStorage.getItem('cart')) {
         const cart = JSON.parse(localStorage.getItem('cart'));
-        // Chuyển đổi về dạng {product_id: {quantity, size, color}}
+        // Chuyển về dạng {product_id: {quantity, size, color}}
         fetch('/api/cart/sync', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -467,4 +482,111 @@ function updateCartCountFromBackend() {
                 cartBadge.style.display = data.cart_count > 0 ? 'inline' : 'none';
             }
         });
+}
+
+// Render cart items từ backend (dùng cho trang view cart)
+function renderCartItems(cartItems) {
+    const cartContainer = document.getElementById('cart-items-container');
+    const orderSummary = document.getElementById('order-summary');
+    if (!cartContainer || !orderSummary) return;
+
+    cartContainer.innerHTML = '';
+    let total = 0;
+    cartItems.forEach((item, idx) => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'cart-item';
+        itemDiv.innerHTML = `
+            <img src="${item.image_url || '/static/images/placeholder-shoe.jpg'}" alt="${item.name}">
+            <div class="cart-item-info">
+                <h3 class="cart-item-title">${item.name}</h3>
+                <div class="cart-item-details">
+                    ${item.size ? `Size: ${item.size}` : ''} 
+                    ${item.color ? ` | Color: ${item.color}` : ''}
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <input type="number" min="1" max="99" value="${item.quantity}" class="form-control cart-qty-input" data-product-id="${item.product_id}" data-size="${item.size || ''}" data-color="${item.color || ''}" style="width: 80px;">
+                <div class="cart-item-price">$${(item.price * item.quantity).toFixed(2)}</div>
+                <button class="btn-outline cart-remove-btn" data-product-id="${item.product_id}" data-size="${item.size || ''}" data-color="${item.color || ''}" style="color: #ef4444; border-color: #ef4444; padding: 0.5rem;">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        `;
+        cartContainer.appendChild(itemDiv);
+        total += item.price * item.quantity;
+    });
+
+    // Cập nhật order summary
+    orderSummary.innerHTML = `
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+            <span>Subtotal (${cartItems.length} items)</span>
+            <span>$${total.toFixed(2)}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+            <span>Shipping</span>
+            <span>${total >= 100 ? 'Free' : '$9.99'}</span>
+        </div>
+        <hr style="margin: 1rem 0;">
+        <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 1.125rem; margin-bottom: 1.5rem;">
+            <span>Total</span>
+            <span>$${(total + (total >= 100 ? 0 : 9.99)).toFixed(2)}</span>
+        </div>
+        <a href="/cart/checkout" class="btn-primary" style="width: 100%; text-align: center; text-decoration: none; margin-bottom: 1rem;">
+            Proceed to Checkout
+        </a>
+        <a href="/products" class="btn-outline" style="width: 100%; text-align: center; text-decoration: none;">
+            Continue Shopping
+        </a>
+    `;
+
+    // Gắn sự kiện cập nhật số lượng
+    document.querySelectorAll('.cart-qty-input').forEach(input => {
+        input.addEventListener('change', function() {
+            const productId = this.dataset.productId;
+            const size = this.dataset.size;
+            const color = this.dataset.color;
+            const quantity = parseInt(this.value);
+            updateCartItem(productId, quantity, size, color);
+        });
+    });
+
+    // Gắn sự kiện xóa sản phẩm
+    document.querySelectorAll('.cart-remove-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const productId = this.dataset.productId;
+            const size = this.dataset.size;
+            const color = this.dataset.color;
+            removeCartItem(productId, size, color);
+        });
+    });
+}
+
+// Cập nhật số lượng sản phẩm
+function updateCartItem(productId, quantity, size, color) {
+    fetch('/api/cart/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ product_id: productId, quantity, size, color })
+    })
+    .then(res => res.json())
+    .then(data => {
+        getCartFromBackend(renderCartItems);
+        updateCartCountFromBackend();
+        showToast('Cart updated!', 'success');
+    });
+}
+
+// Xóa sản phẩm khỏi giỏ
+function removeCartItem(productId, size, color) {
+    fetch('/api/cart/remove', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ product_id: productId, size, color })
+    })
+    .then(res => res.json())
+    .then(data => {
+        getCartFromBackend(renderCartItems);
+        updateCartCountFromBackend();
+        showToast('Item removed from cart!', 'info');
+    });
 }

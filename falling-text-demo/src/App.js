@@ -18,8 +18,10 @@ function App() {
       }}
     >
       <FallingText
-        text={`React Bits is a library of animated and interactive React components designed to streamline UI development and simplify your workflow.`}
-        highlightWords={["React", "Bits", "animated", "components", "simplify"]}
+        // --- Bắt đầu thay đổi ---
+        text={`Unicorn Brand: Where every step is a magical journey. Discover our collection of stylish, comfortable, and enchanting footwear designed to make you shine.`}
+        highlightWords={["Unicorn", "magical", "stylish", "shine"]}
+        // --- Kết thúc thay đổi ---
         highlightClass="highlighted"
         trigger="hover"
         backgroundColor="transparent"
